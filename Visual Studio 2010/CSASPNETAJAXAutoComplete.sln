@@ -1,0 +1,35 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "CSASPNETAJAXAutoComplete", "CSASPNETAJAXAutoComplete\", "{6B7E0C50-5668-4405-B322-5C74B202176F}"
+	ProjectSection(WebsiteProperties) = preProject
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
+		Debug.AspNetCompiler.VirtualPath = "/CSASPNETAJAXAutoComplete"
+		Debug.AspNetCompiler.PhysicalPath = "CSASPNETAJAXAutoComplete\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\CSASPNETAJAXAutoComplete\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/CSASPNETAJAXAutoComplete"
+		Release.AspNetCompiler.PhysicalPath = "CSASPNETAJAXAutoComplete\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\CSASPNETAJAXAutoComplete\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "19378"
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6B7E0C50-5668-4405-B322-5C74B202176F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B7E0C50-5668-4405-B322-5C74B202176F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

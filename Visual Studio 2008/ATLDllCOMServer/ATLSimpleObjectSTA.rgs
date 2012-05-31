@@ -1,0 +1,26 @@
+HKCR
+{
+	ATLDllCOMServer.ATLSimpleObjectSTA.1 = s 'ATLSimpleObjectSTA Class'
+	{
+		CLSID = s '{92FCF37F-F6C7-4F8A-AA09-1A14BA118084}'
+	}
+	ATLDllCOMServer.ATLSimpleObjectSTA = s 'ATLSimpleObjectSTA Class'
+	{
+		CLSID = s '{92FCF37F-F6C7-4F8A-AA09-1A14BA118084}'
+		CurVer = s 'ATLDllCOMServer.ATLSimpleObjectSTA.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {92FCF37F-F6C7-4F8A-AA09-1A14BA118084} = s 'ATLSimpleObjectSTA Class'
+		{
+			ProgID = s 'ATLDllCOMServer.ATLSimpleObjectSTA.1'
+			VersionIndependentProgID = s 'ATLDllCOMServer.ATLSimpleObjectSTA'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{9B23EFED-A0C1-46B6-A903-218206447F3E}'
+		}
+	}
+}

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ServiceConfiguration serviceName="StoryCreatorCloudService" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceConfiguration" osFamily="2" osVersion="*">
+  <Role name="StoryCreatorWebRole">
+    <Instances count="1" />
+    <ConfigurationSettings>
+      <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" value="DefaultEndpointsProtocol=https;AccountName=storycreator;AccountKey=xdOEm06oFh3Fv3tn8HJc36u7ULVSYZ7JKKcN95hA7uMoUEKLFjob1Cx400THm9svGRus+3eFYSkQlK5zHfnV4w==" />
+      <Setting name="DataConnectionString" value="DefaultEndpointsProtocol=https;AccountName=storycreator;AccountKey=xdOEm06oFh3Fv3tn8HJc36u7ULVSYZ7JKKcN95hA7uMoUEKLFjob1Cx400THm9svGRus+3eFYSkQlK5zHfnV4w==" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.Enabled" value="true" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountUsername" value="lanxing" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountEncryptedPassword" value="MIIBnQYJKoZIhvcNAQcDoIIBjjCCAYoCAQAxggFOMIIBSgIBADAyMB4xHDAaBgNVBAMME1dpbmRvd3MgQXp1cmUgVG9vbHMCECjSI8F5tl+2Q0zPEXVQVBowDQYJKoZIhvcNAQEBBQAEggEAQeVXD/eOQ4JbCI1tQAdOWtAY1/w4innrNGD0ZiCDcTUfSEjpvs9DdXHRJp/IQsME5EQ8CIBK3XJiTZd9TMJurfyldDkmMXjQd34ktUfQFZ6UZHWz+qa9QZXayBUZKcB5Ayi4kTYHTeoSODny1/4POGcC31BYxIRm9aMLI0bXHgRZWIiStHNddA77b+GVr1sbTMhx4cK+V8uZyc7Ej2eeUfZ0o+EfDqACBELEPt+MByiWrCW8VBGRSXHriO/UcKvMKGwayAlgxnI+azdZ8vxQb2zl91uH7pFgOlgReSuCkcDZiI2JE4qKgrhSaV7l9baUFa9JupciqPhjoACveKW+NTAzBgkqhkiG9w0BBwEwFAYIKoZIhvcNAwcECKPrwOCLsi7AgBA/rWyyQWj+ApMJkKQ8ih7z" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountExpiration" value="2012-08-04T23:59:59.0000000+08:00" />
+    </ConfigurationSettings>
+    <Certificates>
+      <Certificate name="Microsoft.WindowsAzure.Plugins.RemoteAccess.PasswordEncryption" thumbprint="0956D509F682D0965F86259A4D0F8CD7C713F926" thumbprintAlgorithm="sha1" />
+    </Certificates>
+  </Role>
+  <Role name="VideoEncodingWorkerRole">
+    <Instances count="1" />
+    <ConfigurationSettings>
+      <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" value="DefaultEndpointsProtocol=https;AccountName=storycreator;AccountKey=xdOEm06oFh3Fv3tn8HJc36u7ULVSYZ7JKKcN95hA7uMoUEKLFjob1Cx400THm9svGRus+3eFYSkQlK5zHfnV4w==" />
+      <Setting name="DataConnectionString" value="DefaultEndpointsProtocol=https;AccountName=storycreator;AccountKey=xdOEm06oFh3Fv3tn8HJc36u7ULVSYZ7JKKcN95hA7uMoUEKLFjob1Cx400THm9svGRus+3eFYSkQlK5zHfnV4w==" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.Enabled" value="true" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountUsername" value="lanxing" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountEncryptedPassword" value="MIIBnQYJKoZIhvcNAQcDoIIBjjCCAYoCAQAxggFOMIIBSgIBADAyMB4xHDAaBgNVBAMME1dpbmRvd3MgQXp1cmUgVG9vbHMCECjSI8F5tl+2Q0zPEXVQVBowDQYJKoZIhvcNAQEBBQAEggEAQeVXD/eOQ4JbCI1tQAdOWtAY1/w4innrNGD0ZiCDcTUfSEjpvs9DdXHRJp/IQsME5EQ8CIBK3XJiTZd9TMJurfyldDkmMXjQd34ktUfQFZ6UZHWz+qa9QZXayBUZKcB5Ayi4kTYHTeoSODny1/4POGcC31BYxIRm9aMLI0bXHgRZWIiStHNddA77b+GVr1sbTMhx4cK+V8uZyc7Ej2eeUfZ0o+EfDqACBELEPt+MByiWrCW8VBGRSXHriO/UcKvMKGwayAlgxnI+azdZ8vxQb2zl91uH7pFgOlgReSuCkcDZiI2JE4qKgrhSaV7l9baUFa9JupciqPhjoACveKW+NTAzBgkqhkiG9w0BBwEwFAYIKoZIhvcNAwcECKPrwOCLsi7AgBA/rWyyQWj+ApMJkKQ8ih7z" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountExpiration" value="2012-08-04T23:59:59.0000000+08:00" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteForwarder.Enabled" value="true" />
+    </ConfigurationSettings>
+    <Certificates>
+      <Certificate name="Microsoft.WindowsAzure.Plugins.RemoteAccess.PasswordEncryption" thumbprint="0956D509F682D0965F86259A4D0F8CD7C713F926" thumbprintAlgorithm="sha1" />
+    </Certificates>
+  </Role>
+</ServiceConfiguration>

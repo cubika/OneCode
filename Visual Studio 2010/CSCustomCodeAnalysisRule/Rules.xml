@@ -1,0 +1,35 @@
+﻿<Rules>
+  <Rule TypeName="FieldNamingRule" Category="Naming" CheckId="CCAR0001">
+    <Name>字段应该以小写字符开始</Name>
+    <Description> 在一个类中，字段的名称应该一小写字符开头 </Description>
+    <Resolution Name="LowercaseField"> 字段的名称 {0} 在类中 {1} 应该以小写字符开始 </Resolution>
+    <MessageLevel Certainty="99">Warning</MessageLevel>
+    <Message Certainty="99">Warning</Message>
+    <FixCategories>NonBreaking</FixCategories>
+    <Owner></Owner>
+    <Url></Url>
+    <Email></Email>
+  </Rule>
+  <Rule TypeName="MethodNamingRule" Category="Naming" CheckId="CCAR0002">
+    <Name>方法名称应该以一个大写字符开始</Name>
+    <Description> 在一个类中，方法的名称应该一大写字符开头 </Description>
+    <Resolution Name="UppercaseMethod">方法名称 {0}在类中 {1} 应该以大写字符开始 </Resolution>
+    <MessageLevel Certainty="99">Warning</MessageLevel>
+    <Message Certainty="99">Warning</Message>
+    <FixCategories>NonBreaking</FixCategories>
+    <Owner></Owner>
+    <Url></Url>
+    <Email></Email>
+  </Rule>
+  <Rule TypeName="PropertyNamingRule" Category="Naming" CheckId="CCAR0003">
+    <Name>属性名称应该以一个大写字符开始</Name>
+    <Description> 在一个类中，属性的名称应该一大写字符开头  </Description>
+    <Resolution Name="UppercaseProperty"> 属性名称 {0} 在类中 {1} 应该以大写字符开始 </Resolution>
+    <MessageLevel Certainty="99">Warning</MessageLevel>
+    <Message Certainty="99">Warning</Message>
+    <FixCategories>NonBreaking</FixCategories>
+    <Owner></Owner>
+    <Url></Url>
+    <Email></Email>
+  </Rule>
+</Rules>

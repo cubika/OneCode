@@ -1,0 +1,58 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+    <title></title>
+    <script type="text/javascript">
+
+        // 抛出一个脚本错误.
+        function CreateScriptError() {
+            throw ("错误! ");
+        }
+
+        // 这段代码会触发一个安全对话框.
+        function LaunchSecurityDialog() {
+            var fso = new ActiveXObject("Scripting.FileSystemObject");
+            var reading = 1;
+            var f = fso.OpenTextFile("Error.htm", reading);
+            try {
+                strs = f.ReadAll();
+            } catch (err) {
+                strs = null;
+            }
+            f.close();
+        }
+
+        // 调用JIT调试器.
+        function LaunchDebugger() {
+            debugger;
+        }
+
+    </script>
+</head>
+<body>
+    <div>
+        <input type="button" value="Script Error" onclick="CreateScriptError();" />
+        <br />
+        点击此按钮测试"忽略Html元素错误".
+        <br />
+        <br />
+    </div>
+    <div>
+        <input type="button" value="Security dialog" onclick="LaunchSecurityDialog();" />
+        <br />
+        点击此按钮测是"忽略所有对话框".
+        <br />
+        要打开安全对话框,您可能需要使用IE浏览器默认的安全级别.<br />
+        你也可以访问一个需要windows认证的网站来测试"忽略所有对话框".
+        <br />
+        <br />
+    </div>
+    <div>
+        <input type="button" value="Launch Debugger" onclick="LaunchDebugger();" />
+        <br />
+        点击此按钮测试"忽略JIT调试器".
+        <br />
+        <br />
+    </div>
+</body>
+</html>

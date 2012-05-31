@@ -1,0 +1,154 @@
+﻿<Window x:Class="CSWPFIrregularShapeWindow.PictureBasedWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        MouseLeftButtonDown="Window_MouseLeftButtonDown"
+        Title="PictureBasedWindow" Height="300" Width="300" Background="Transparent" OpacityMask="White" WindowStyle="None" AllowsTransparency="True" >
+    <Window.Resources>
+        <Style TargetType="Image">
+            <Setter Property="Opacity" Value="0.5" />
+            <Style.Triggers>
+                <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                    <EventTrigger.Actions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation
+                  Duration="0:0:0.2"
+                  Storyboard.TargetProperty="Height"
+                  To="280" />
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger.Actions>
+                </EventTrigger>
+                <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                    <EventTrigger.Actions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation
+                  Duration="0:0:1"
+                  Storyboard.TargetProperty="Height"  />
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger.Actions>
+                </EventTrigger>
+            </Style.Triggers>
+
+        </Style>
+
+    </Window.Resources>
+    <Grid>
+        <Grid.Resources>
+            <TransformGroup x:Key="ImageTransformResource">
+                <ScaleTransform />
+                <TranslateTransform />
+            </TransformGroup>
+        </Grid.Resources>
+        <Grid.ColumnDefinitions>
+            <!--用户在这里自定义 -->
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <!--用户在这里自定义-->
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Image Height="250" Name="test" Source="/CSWPFIrregularShapeWindow;component/Images/transparentPic.png" Stretch="Fill" Grid.ColumnSpan="10" Grid.RowSpan="4">
+            <Image.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Minimize" Name="mnuInvokeMinimize"/>
+                    <MenuItem Header="Maximize" Name="mnuInvokeMaximize"/>
+                    <MenuItem Header="Restore Down"  Name="mnuInvokeRestore"/>
+                    <MenuItem Header="Close"  Name="mnuInvokeClose"/>
+                </ContextMenu>
+            </Image.ContextMenu>
+        </Image>
+
+        <Button Canvas.Left="180" Canvas.Top="80" Height="0" Width="0"
+            ToolTip="Click me to close the form." Name="btnInvokeClose" Grid.Column="8" TabIndex="0" Grid.Row="0">
+            <Button.Template>
+                <ControlTemplate>
+                    <Canvas>
+                        <Rectangle Width="20" Height="20" Stroke="DarkBlue" RadiusX="2" RadiusY="2">
+                            <Rectangle.Fill>
+                                <SolidColorBrush x:Name="myAnimatedBrush" Color="Blue" />
+                            </Rectangle.Fill>
+                        </Rectangle>
+                        <Line X1="3" Y1="3" X2="17" Y2="17" Stroke="White" StrokeThickness="2"></Line>
+                        <Line X1="17" Y1="3" X2="3" Y2="17" Stroke="White" StrokeThickness="2"></Line>
+                    </Canvas>
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
+
+        <Button Panel.ZIndex="1" Name="btnInvokeMaximize" Canvas.Left="180" Canvas.Top="80" Height="0" Width="0" Grid.Column="7" TabIndex="0" Grid.Row="0"
+            ToolTip="Click me to Maximize the form.">
+            <Button.Template>
+                <ControlTemplate>
+                    <Canvas>
+                        <Rectangle Width="20" Height="20" Stroke="DarkBlue" RadiusX="2" RadiusY="2">
+                            <Rectangle.Fill>
+                                <SolidColorBrush x:Name="myAnimatedBrush" Color="Blue" />
+                            </Rectangle.Fill>
+                        </Rectangle>
+                        <Line X1="3" Y1="4" X2="17" Y2="4" Stroke="White" StrokeThickness="2"></Line>
+                        <Line X1="3" Y1="5" X2="17" Y2="5" Stroke="White" StrokeThickness="2"></Line>
+                        <Line X1="3" Y1="6" X2="17" Y2="6" Stroke="White" StrokeThickness="2"></Line>
+                        <Line X1="3" Y1="15" X2="17" Y2="15" Stroke="White" StrokeThickness="2"></Line>
+                        <Line X1="3" Y1="5" X2="3" Y2="15" Stroke="White" StrokeThickness="2"></Line>
+                        <Line X1="17" Y1="5" X2="17" Y2="15" Stroke="White" StrokeThickness="2"></Line>
+                    </Canvas>
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
+
+
+        <Button Panel.ZIndex="0"  Name="btnInvokeRestore" Canvas.Left="180" Canvas.Top="80" Height="0" Width="0" Grid.Column="7" TabIndex="0" Grid.Row="0"
+            ToolTip="Click me to Maximize the form.">
+            <Button.Template>
+                <ControlTemplate>
+                    <Canvas>
+                        <Rectangle Width="20" Height="20" Stroke="DarkBlue" RadiusX="2" RadiusY="2">
+                            <Rectangle.Fill>
+                                <SolidColorBrush x:Name="myAnimatedBrush" Color="Blue" />
+                            </Rectangle.Fill>
+                        </Rectangle>
+                        <Line X1="8" Y1="4" X2="17" Y2="4" Stroke="White" StrokeThickness="2"></Line>
+                        <Line X1="8" Y1="10" X2="17" Y2="10" Stroke="White" StrokeThickness="2"></Line>
+                        <Line X1="8" Y1="5" X2="8" Y2="10" Stroke="White" StrokeThickness="2"></Line>
+                        <Line X1="17" Y1="5" X2="17" Y2="10" Stroke="White" StrokeThickness="2"></Line>
+
+                        <Line X1="3" Y1="8" X2="13" Y2="8" Stroke="White" StrokeThickness="2"></Line>
+                        <Line X1="3" Y1="15" X2="13" Y2="15" Stroke="White" StrokeThickness="2"></Line>
+                        <Line X1="3" Y1="8" X2="3" Y2="15" Stroke="White" StrokeThickness="2"></Line>
+                        <Line X1="13" Y1="8" X2="13" Y2="15" Stroke="White" StrokeThickness="2"></Line>
+                    </Canvas>
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
+        <Button Name="btnInvokeMinimize" Canvas.Left="180" Canvas.Top="80" Height="0" Width="0" Grid.Column="6" TabIndex="0" Grid.Row="0"
+            ToolTip="Click me to Minimize the form.">
+            <Button.Template>
+                <ControlTemplate>
+                    <Canvas>
+                        <Rectangle Width="20" Height="20" Stroke="DarkBlue" RadiusX="2" RadiusY="2">
+                            <Rectangle.Fill>
+                                <SolidColorBrush x:Name="myAnimatedBrush" Color="Blue" />
+                            </Rectangle.Fill>
+                        </Rectangle>
+                        <Line X1="3" Y1="10" X2="17" Y2="10" Stroke="White" StrokeThickness="2"></Line>
+                    </Canvas>
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
+    </Grid>
+</Window>

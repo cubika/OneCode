@@ -1,0 +1,208 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>Read Me</title>
+	<style type="text/css">
+
+
+		H2
+		{
+			color: #003399;
+			font-size: 125%;
+		}
+		
+		H3
+		{
+			color: #0033DD;
+			font-size: 110%;
+		}
+	</style>
+</head>
+<body>
+
+	<h2>
+		概述</h2>
+	<p>
+        这个例子演示了如何使用Windows Azure平台的AppFabric Service Bus，在互联网上的
+        Silverlight客户端中公开一个on-premises WCF服务。这个例子建立了一个WCF REST服务。
+        但是你可以使用相同的技术使用其他类型的WCF服务。
+        </p>
+	<h2>
+		先决条件</h2>
+	<p>
+        此程序运行，必须先安装Windows Azure平台AppFabric SDK。获取更多Windows Azure平台
+        AppFabric信息：
+		<a href="http://msdn.microsoft.com/en-us/library/ee173584.aspx">
+		http://msdn.microsoft.com/en-us/library/ee173584.aspx</a>.</p>
+	<h2>
+		运行示例</h2>
+	<p>
+        请确定将&quot;ServiceBus&quot;项目设置为解决方案的启动项目</p>
+	<p>
+        修改ServiceBus项目的app.config文件。你需要2处改变</p>
+	<p class="MsoNormal">
+		<span style="font-size:
+10.0pt;font-family:&quot;Courier New&quot;;color:blue;mso-no-proof:yes">
+		<span style="mso-tab-count:2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		</span>&lt;!--</span><span style="font-size:10.0pt;font-family:&quot;Courier New&quot;;color:green;mso-no-proof:
+yes"> 更改为你的命名空间。 </span>
+		<span style="font-size:10.0pt;
+font-family:&quot;Courier New&quot;;color:blue;mso-no-proof:yes">--&gt;<o:p></o:p></span></p>
+	<p class="MsoNormal">
+		<span style="font-size:
+10.0pt;font-family:&quot;Courier New&quot;;color:blue;mso-no-proof:yes">
+		<span style="mso-tab-count:2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		</span>&lt;</span><span style="font-size:
+10.0pt;font-family:&quot;Courier New&quot;;color:#A31515;mso-no-proof:yes">add</span><span 
+			style="font-size:10.0pt;font-family:&quot;Courier New&quot;;color:blue;mso-no-proof:yes">
+		</span>
+		<span style="font-size:10.0pt;font-family:&quot;Courier New&quot;;color:red;
+mso-no-proof:yes">key</span><span style="font-size:10.0pt;font-family:&quot;Courier New&quot;;
+color:blue;mso-no-proof:yes">=</span><span style="font-size:10.0pt;font-family:
+&quot;Courier New&quot;;mso-no-proof:yes">&quot;<span style="color:blue">serviceNamespace</span>&quot;<span 
+			style="color:blue"> </span><span style="color:red">value</span><span 
+			style="color:blue">=</span>&quot;<span style="color:blue">[namespace]</span>&quot;<span 
+			style="color:blue">/&gt;<o:p></o:p></span></span></p>
+	<p>
+		&nbsp;</p>
+	<p class="MsoNormal">
+		<span style="font-size:
+10.0pt;font-family:&quot;Courier New&quot;;color:blue;mso-no-proof:yes">
+		<span style="mso-tab-count:7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		</span>&lt;!--</span><span style="font-size:10.0pt;font-family:&quot;Courier New&quot;;color:green;mso-no-proof:
+yes"> 将[name]更改为你的发行人姓名(默认情况下为&quot;owner&quot;), 并且将[key]更改为你的发行人的密钥. </span>
+		<span style="font-size:10.0pt;font-family:&quot;Courier New&quot;;color:blue;mso-no-proof:yes">
+		--&gt;<o:p></o:p></span></p>
+	<p class="MsoNormal">
+		<span style="font-size:
+10.0pt;font-family:&quot;Courier New&quot;;color:blue;mso-no-proof:yes">
+		<span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		</span>&lt;</span><span style="font-size:10.0pt;font-family:&quot;Courier New&quot;;color:#A31515;mso-no-proof:
+yes">sharedSecret</span><span style="font-size:10.0pt;font-family:&quot;Courier New&quot;;
+color:blue;mso-no-proof:yes"> </span>
+		<span style="font-size:10.0pt;font-family:
+&quot;Courier New&quot;;color:red;mso-no-proof:yes">issuerName</span><span 
+			style="font-size:10.0pt;font-family:&quot;Courier New&quot;;color:blue;mso-no-proof:yes">=</span><span 
+			style="font-size:10.0pt;font-family:&quot;Courier New&quot;;mso-no-proof:yes">&quot;<span 
+			style="color:blue">[name]</span>&quot;<span style="color:blue"> </span>
+		<span style="color:red">issuerSecret</span><span style="color:blue">=</span>&quot;<span 
+			style="color:blue">[key]</span>&quot;<span style="color:blue"> /&gt;<o:p></o:p></span></span></p>
+	<p>
+        运行服务程序，然后请等到出现&quot;WCF REST服务开始监听...&quot;提示。
+        这表明服务已启动。</p>
+	<p>
+		如果你愿意，你可以打开浏览器，并访问
+		<a href="https://namespace.servicebus.windows.net/clientaccesspolicy.xml">
+		https://namespace.servicebus.windows.net/clientaccesspolicy.xml</a> 来验证 
+		Silverlight跨域策略文件现在已被启用。</p>
+	<p>
+		在运行Silverlight客户端之前, 请先修改Client项目的MainPage.xaml.cs文件</p>
+	<p class="MsoNormal">
+		<span style="font-size:
+10.0pt;font-family:&quot;Courier New&quot;;mso-no-proof:yes">
+		<span style="mso-tab-count:
+2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>
+		<span style="color:green">// 更改到你的命名空间.<o:p></o:p></span></span></p>
+	<p class="MsoNormal">
+		<span style="font-size:
+10.0pt;font-family:&quot;Courier New&quot;;mso-no-proof:yes">
+		<span style="mso-tab-count:
+2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>
+		<span style="color:blue">private</span> <span style="color:blue">const</span>
+		<span style="color:blue">string</span> ServiceNamespace =
+		<span style="color:#A31515">&quot;[namespace]&quot;</span>;<o:p></o:p></span></p>
+	<p>
+        现在设置Client.Web作为解决方案的启动项目（注意，是Client.Web，而不是Client），
+        并运行。你将会看到一个允许你上传/下载文件的Silverlight客户端。</p>
+	<p>
+        在点击上传文件按钮后，请等待，直到出现一个对话框提示你文件已上传成功。然后在
+        Windows Explorer中打开\ServiceBus\bin\Debug文件夹，你将会看到上传的文件夹。
+        在这一步中，我们使用POST调用了WCF REST服务。</p>
+	<p>
+        请确定你在TextBox中输入了正确的文件名，并且点击了下载文件按钮。请等待，直到出现
+        一个对话框提示你文件已下载成功。然后打开你保存文件的目录，你将会看到文件下载成功。
+        在这一步中，我们使用GET调用了WCF REST服务。</p>
+	<p>
+        在本例中没有演示其他HTTP命令，但是用法基本一致。</p>
+	<h2>
+		描述</h2>
+	<p>
+		这个解决方案有3个项目。</p>
+	<h3>
+				ServiceBus</h3>
+	<p>
+        托管WCF REST服务的控制台程序，并且使用Service Bus公开它。请确定设置
+        该项目作为解决方案的启动项目。</p>
+	<p>
+        为了使一个正常的Silverlight客户端（不是升级版的OOB）可以使用web服务
+        在不同的域中工作，跨域策略文件必须启用。在自托管WCF程序中这样做，我们
+        可以使用UriTemplate——&quot;/clientaccesspolicy.xml&quot;建立一个WCF REST服务。</p>
+	<p class="MsoNormal">
+		<span style="font-size:
+10.0pt;font-family:&quot;Courier New&quot;;mso-no-proof:yes">
+		<span style="mso-tab-count:
+2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>[<span 
+			style="color:#2B91AF">OperationContractct</span>, <span style="color:#2B91AF">
+		WebGet</span>(UriTemplate = <span style="color:#A31515">
+		&quot;/clientaccesspolicy.xml&quot;</span>)]<o:p></o:p></span></p>
+	<p class="MsoNormal">
+		<span style="font-size:
+10.0pt;font-family:&quot;Courier New&quot;;mso-no-proof:yes">
+		<span style="mso-tab-count:
+2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>
+		<span style="color:#2B91AF">Stream</span> GetClientAccessPolicy();<o:p></o:p></span></p>
+	<p>
+        这样，可以通过HTTP GET请求得到GetClientAccessPolicy：</p>
+	<p>
+		<a href="https://namespace.servicebus.windows.net/clientaccesspolicy.xml">
+		https://namespace.servicebus.windows.net/clientaccesspolicy.xml</a> </p>
+	<p>
+        默认情况下，WebHttpRelayBinding使用传输安全协议保护你的Service Bus证书。这与通常
+        的WebHttpRelayBinding不同。所以，默认情况下，我们必须使用https协议。你当然可以使用
+        http设置安全模式为None。</p>
+	<p>
+        此外，这时Access Control（默认情况下，客户端程序连接到Service Bus时启用）
+        不具有跨域功能。所以为了为Silverlight客户端服务，你必须关闭Access Control。</p>
+	<p class="MsoNormal">
+		<span style="font-size:
+10.0pt;font-family:&quot;Courier New&quot;;color:blue;mso-no-proof:yes">
+		<span style="mso-tab-count:5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		</span>&lt;!--</span><span style="font-size:10.0pt;font-family:&quot;Courier New&quot;;color:green;mso-no-proof:
+yes"> 关闭客户端身份验证，以便Silverlight客户端不需要当前证书。 </span>
+		<span style="font-size:10.0pt;font-family:
+&quot;Courier New&quot;;color:blue;mso-no-proof:yes">--&gt;<o:p></o:p></span></p>
+	<p class="MsoNormal">
+		<span style="font-size:
+10.0pt;font-family:&quot;Courier New&quot;;color:blue;mso-no-proof:yes">
+		<span style="mso-tab-count:5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		</span>&lt;</span><span style="font-size:10.0pt;font-family:&quot;Courier New&quot;;color:#A31515;mso-no-proof:
+yes">security</span><span style="font-size:10.0pt;font-family:&quot;Courier New&quot;;
+color:blue;mso-no-proof:yes"> </span>
+		<span style="font-size:10.0pt;font-family:
+&quot;Courier New&quot;;color:red;mso-no-proof:yes">relayClientAuthenticationType</span><span 
+			style="font-size:10.0pt;font-family:&quot;Courier New&quot;;color:blue;mso-no-proof:yes">=</span><span 
+			style="font-size:10.0pt;font-family:&quot;Courier New&quot;;mso-no-proof:yes">&quot;<span 
+			style="color:blue">None</span>&quot;<span style="color:blue"> /&gt;<o:p></o:p></span></span></p>
+	<p>
+		下一版本的Access Control可能会提供跨域功能，所以你可以从Silverlight客户端直接
+        连接AC保护Service Bus。早期的预览在：
+		<a href="https://portal.appfabriclabs.com/">https://portal.appfabriclabs.com/</a>. 
+        请注意，你不应该在产品环境中预览。</p>
+	<p>
+        这个项目的其他代码与通常的WCF REST服务项目没有太大不同。在未来，我们可能会发布
+        如何建立通常的WCF服务的示例（作为本示例的前提）。所以，我们不会在这个文档中过
+        深的探讨WCF。</p>
+	<h3>
+		Client</h3>
+	<p>
+        Silverlight 3客户端项目允许你测试服务。关于如何使用，请参考
+        &quot;运行示例&quot;章节。</p>
+	<h3>
+		Client.Web</h3>
+	<p>
+        托管Silverlight客户端的web程序。为了使Silverlight程序可以使用互联网资源工作，必须
+        使用http(s) scheme托管到web应用程序。否则，你将陷入一个跨scheme的问题（除了升级版的OOB）。
+        当测试客户端时，请确保在运行Client之前运行Client.Web</p>
+
+</body>
+</html>

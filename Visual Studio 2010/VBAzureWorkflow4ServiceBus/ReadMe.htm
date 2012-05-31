@@ -1,0 +1,172 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>ReadMe</title>
+	<style type="text/css">
+
+		H2
+		{
+			color: #003399;
+			font-size: 125%;
+		}
+		
+		H3
+		{
+			color: #0033DD;
+			font-size: 110%;
+		}
+	</style>
+</head>
+<body>
+	<h2>
+		概述</h2>
+	<p>
+        本示例演示了如何使用Windows Azure Platform Service Bus公开on-premises WCF Workflow Service.
+        本示例将使用到Visual Studio 2010 Beta 2和WF 4.</p>
+	<p>
+        然而，当前版本的Windows Azure Platform AppFabric是以.NET 3.5为背景编辑的，你可以在.NET4
+        项目中使用这个程序集.</p>
+	<p>
+        本示例中的workflow使用了WF 4中介绍的标准ReceiveRequest/SendResponse架构。它将服务参数的值与20做
+        比较，并会分别返回&quot;你输入了一个小值&quot;和&quot;你输入了一个大值&quot;.客户端程序将会调用
+        Workflow Service两次，分别传人一个小于20和一个大于20的值.</p>
+	<h2>
+		先决条件</h2>
+	<p>
+        使此示例运行，你必须安装Windows Azure Platform AppFabric SDK.你还必须拥有一个有效的
+        Windows Azure Platform AppFabric账户.关于Windows Azure platform AppFabric
+        的更多信息：
+		<a href="http://msdn.microsoft.com/en-us/library/ee173584.aspx">
+		http://msdn.microsoft.com/en-us/library/ee173584.aspx</a>.</p>
+	<h2>
+		运行示例</h2>
+	<p>
+		配置VBAZWorkflow4ServiceBus程序的web.config文件:</p>
+	<p class="MsoNormal">
+		<span style="font-size: 9.5pt; font-family: Consolas; color: blue"><span style="mso-tab-count: 6">
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>&lt;!--</span><span style="font-size: 9.5pt; font-family: Consolas; color: green">
+			Replace {issuer name} and {issuer secret} with your credential. </span><span style="font-size: 9.5pt;
+				font-family: Consolas; color: blue">--&gt;</span><span style="font-size: 9.5pt; font-family: Consolas"><o:p></o:p></span></p>
+	<p class="MsoNormal">
+		<span style="font-size: 9.5pt; font-family: Consolas; color: blue"><span style="mso-tab-count: 6">
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>&lt;</span><span style="font-size: 9.5pt; font-family: Consolas; color: #A31515">clientCredentials</span><span
+			style="font-size: 9.5pt; font-family: Consolas; color: blue">&gt;</span><span style="font-size: 9.5pt;
+				font-family: Consolas"><o:p></o:p></span></p>
+	<p class="MsoNormal">
+		<span style="font-size: 9.5pt; font-family: Consolas; color: blue"><span style="mso-tab-count: 7">
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>&lt;</span><span style="font-size: 9.5pt; font-family: Consolas; color: #A31515">sharedSecret</span><span
+			style="font-size: 9.5pt; font-family: Consolas; color: blue"> </span><span style="font-size: 9.5pt;
+				font-family: Consolas; color: red">issuerName</span><span style="font-size: 9.5pt;
+					font-family: Consolas; color: blue">=</span><span style="font-size: 9.5pt; font-family: Consolas">&quot;<span
+						style="color: blue">{issuer name}</span>&quot;<span style="color: blue"> </span>
+						<span style="color: red">issuerSecret</span><span style="color: blue">=</span>&quot;<span
+							style="color: blue">{issuer secret}</span>&quot;<span style="color: blue">/&gt;</span><o:p></o:p></span></p>
+	<p class="MsoNormal">
+		<span style="font-size: 9.5pt; font-family: Consolas; color: blue"><span style="mso-tab-count: 6">
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>&lt;/</span><span style="font-size: 9.5pt; font-family: Consolas; color: #A31515">clientCredentials</span><span
+			style="font-size: 9.5pt; font-family: Consolas; color: blue">&gt;</span><o:p></o:p></p>
+	<p class="MsoNormal">
+		<o:p></o:p>
+	</p>
+	<p class="MsoNormal">
+		<span style="font-size: 9.5pt; font-family: Consolas; color: blue"><span style="mso-tab-count: 4">
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		</span>&lt;!--</span><span style="font-size: 9.5pt; font-family: Consolas; color: green">
+			Replace {service namespace} with your service name space. </span><span style="font-size: 9.5pt;
+				font-family: Consolas; color: blue">--&gt;</span><span style="font-size: 9.5pt; font-family: Consolas"><o:p></o:p></span></p>
+	<p class="MsoNormal">
+		<span style="font-size: 9.5pt; font-family: Consolas; color: blue"><span style="mso-tab-count: 4">
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>&lt;</span><span style="font-size: 9.5pt; font-family: Consolas; color: #A31515">endpoint</span><span
+			style="font-size: 9.5pt; font-family: Consolas; color: blue"> </span><span style="font-size: 9.5pt;
+				font-family: Consolas; color: red">address</span><span style="font-size: 9.5pt; font-family: Consolas;
+					color: blue">=</span><span style="font-size: 9.5pt; font-family: Consolas">&quot;<span
+						style="color: blue">https://{service namespace}.servicebus.windows.net/ProcessDataWorkflowService</span>&quot;<span
+							style="color: blue"> </span><span style="color: red">binding</span><span style="color: blue">=</span>&quot;<span
+								style="color: blue">basicHttpRelayBinding</span>&quot;<span style="color: blue">
+						</span><span style="color: red">contract</span><span style="color: blue">=</span>&quot;<span
+							style="color: blue">IProcessDataWorkflowService</span>&quot;<span style="color: blue">/&gt;</span><o:p></o:p></span></p>
+	<p>
+		配置Client程序的Program.vb文件:</p>
+	<p class="MsoNormal">
+		<span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-tab-count:2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		</span><span style="color:green">&#39; Replace {service namespace} with your service 
+		name space.</span><o:p></o:p></span></p>
+	<p class="MsoNormal">
+		<span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-tab-count:2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		</span><span style="color:blue">Dim</span> address <span style="color:blue">As</span>
+		<span style="color:blue">New</span> <span style="color:#2B91AF">EndpointAddress</span>(<span 
+			style="color:#2B91AF">ServiceBusEnvironment</span>.CreateServiceUri(<span 
+			style="color:#A31515">&quot;https&quot;</span>, <span style="color:#A31515">&quot;{service 
+		namespace}&quot;</span>, <span style="color:#A31515">&quot;ProcessDataWorkflowService&quot;</span>))<o:p></o:p></span></p>
+	<p class="MsoNormal">
+		&nbsp;</p>
+	<p class="MsoNormal">
+		<span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-tab-count:2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		</span><span style="color:green">&#39; Replace {issuer name} and {issuer secret} 
+		with your credential.</span><o:p></o:p></span></p>
+	<p class="MsoNormal">
+		<span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-tab-count:2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		</span>sharedSecretServiceBusCredential.Credentials.SharedSecret.IssuerName =
+		<span style="color:#A31515">&quot;{issuer name}&quot;</span><o:p></o:p></span></p>
+	<p class="MsoNormal">
+		<span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-tab-count:2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		</span>sharedSecretServiceBusCredential.Credentials.SharedSecret.IssuerSecret =
+		<span style="color:#A31515">&quot;{issuer secret}&quot;</span><o:p></o:p></span></p>
+	<p class="MsoNormal">
+		然后运行VBAZWorkflow4ServiceBus项目.确保你已经将ProcessDataWorkflowService.xamlx
+        设置为启动页面.</p>
+	<p class="MsoNormal">
+		访问https://{service namespace}.servicebus.windows.net/ProcessDataWorkflowService, 
+        检查服务是否在Service Bus Registry列表上.</p>
+	<p>
+        最后，运行Client项目，检测workflow service正常工作.</p>
+	<h2>
+		描述</h2>
+	<p>
+		该解决方案包含2个项目.</p>
+	<h3>
+		VBAZWorkflow4ServiceBus</h3>
+	<p>
+        服务项目.这是一个普通的ASP.NET项目，用来托管WCF Workflow Service.在IIS或者
+        ASP.NET Development Server中使用Service Bus与使用自托管服务类似.你必须为
+        Service Bus提供AC证书，监视服务.这样做，你可以建立自定义ServiceHostFactory
+        和ServiceHost，然后在代码中提供了证书.另外，你也可以按照示例演示的，在
+        web.config中放置transportClientEndpointBehavior.</p>
+	<p>
+        当你安装了Windows Azure platform AppFabric SDK，machine.config文件的.NET 3.5
+        将会更新，包含关联了WCF扩展的Service Bus.然而，machine.config剩余的.NET 4不会受到影响.
+        在.NET 4或者.NET 3.5的web/app.config中使用扩展，是托管在没有
+        Windows Azure platform AppFabric SDK（类似于Windows Azure云环境）的机器上的，你必须
+        在web/app.config中注册扩展元素.</p>
+	<p>
+        此外，示例包含了ServiceRegistrySettingsElement类，允许你在web/app.config中配置
+        ServiceRegistrySettings.你同样必须在WCF扩展部分中注册他。</p>
+	<p>
+        如果与VBAZWorkflowService35示例比较，你将会发现WF 4与WF 3.5相比，包含了很多复杂
+        的编程模型.例如，不再需要一个单独的WFServiceLibrary项目.现在，.xamlx文件可以直接
+        托管在web程序中.此外，利用workflow变量介绍，不再需要绑定服务参数并返回一个值到
+        DependencyProperties.</p>
+	<p>
+        WCF 4还介绍了很多改进.例如，现在可以不用名称建立性能配置（将会自动应用到所有终端中）。</p>
+	<p>
+        然而，相比于WCF和WF，本示例更关注Service Bus.更多关于WCF和WF 4的信息，请分别参考：
+		<a href="http://msdn.microsoft.com/en-us/library/dd456779(VS.100).aspx">
+		http://msdn.microsoft.com/en-us/library/dd456779(VS.100).aspx</a> 和
+		<a href="http://msdn.microsoft.com/en-us/library/dd489441(VS.100).aspx">
+		http://msdn.microsoft.com/en-us/library/dd489441(VS.100).aspx</a>. 
+        在未来的示例中，我们可能还会演示更多WCF 4和WF 4.</p>
+	<h3>
+		Client</h3>
+	<p>
+        调用WCF Workflow Service的控制台客户端程序.在客户端程序中，我们演示了如何使用代码
+        使用Service Bus.注意，默认情况下，当你建立了一个客户端程序时（例如控制台程序和WPF），
+        目标框架是.NET Framework 4客户端属性.为了使用Service Bus，你必须将目标框架更改为
+        完整的.NET Framework 4</p>
+
+</body>
+</html>

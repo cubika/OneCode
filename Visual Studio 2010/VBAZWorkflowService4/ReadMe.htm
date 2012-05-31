@@ -1,0 +1,93 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>ReadMe</title>
+	<style type="text/css">
+		H2
+		{
+			color: #003399;
+			font-size: 125%;
+		}
+		
+		H3
+		{
+			color: #0033DD;
+			font-size: 110%;
+		}
+	</style>
+</head>
+<body>
+	<h2>
+		概述</h2>
+    <p>
+        该示例演示了如何在Windows Azure上运行WCF Workflow Service.将会用到Visual Studio 2010和WF 4</p>
+    <p>
+        然而现有的Windows Azure platform AppFabric不包含Workflow Service组件，你可以直接在 Windows Azure
+        Web Role中运行WCF Workflow Services.默认情况下，Web Role完全受信， 所以它支持workflow环境.</p>
+    <p>
+        本示例中的workflow使用了WF 4中介绍的标准ReceiveRequest/SendResponse架构。它将服务参数的值与20做 
+        比较，并会分别返回&quot;你输入了一个小值&quot;和&quot;你输入了一个大值&quot;.客户端程序将会调用
+        Workflow Service两次，分别传人一个小于20和一个大于20的值.</p>
+    <h2>
+        先决条件</h2>
+    <p>
+        此示例运行，必须安装Windows Azure SDK和Windows Azure Tools for Visual Studio. 本示例运行在本地计算机模拟器上（包含了Windows
+        Azure SDK）并且还在Windows Azure云服务中. 在云服务中运行本示例，你必须拥有一个有效的Windows Azure账户.更多关于Windows
+        Azure 的信息，请参考： <a href="http://msdn.microsoft.com/en-us/library/dd179367.aspx">http://msdn.microsoft.com/en-us/library/dd179367.aspx</a>.
+        请注意Windows Azure SDK同样需要一些自己的先决条件（包括IIS和SQL Server）.</p>
+    <h2>
+        运行示例</h2>
+    <p>
+        你必须以elevated (administrator)模式启动Visual Studio.右击Visual Studio，然后点击 Run as Administrator.需要Windows
+        Azure模拟环境.</p>
+    <p>
+        配置Client程序的app.config文件:<!-- Modify address if you host the workflow service in the cloud, or if your Development Fabric is not listening on port 81. --><endpoint address="http://127.0.0.1:81/ProcessDataWorkflowService.svc"
+                binding="basicHttpBinding" bindingConfiguration="BasicHttpBinding_IProcessDataWorkflow"
+                contract="WorkflowServiceReference.IProcessDataWorkflow" name="BasicHttpBinding_IProcessDataWorkflow" /><!-- Modify address if you host the workflow service in the cloud, or if your Development Fabric is not listening on port 81. --><endpoint address="http://127.0.0.1:81/ProcessDataWorkflowService.svc"
+                binding="basicHttpBinding" bindingConfiguration="BasicHttpBinding_IProcessDataWorkflow"
+                contract="WorkflowServiceReference.IProcessDataWorkflow" name="BasicHttpBinding_IProcessDataWorkflow" /><!-- Modify address if you host the workflow service in the cloud, or if your Development Fabric is not listening on port 81. --><endpoint address="http://127.0.0.1:81/ProcessDataWorkflowService.svc"
+                binding="basicHttpBinding" bindingConfiguration="BasicHttpBinding_IProcessDataWorkflow"
+                contract="WorkflowServiceReference.IProcessDataWorkflow" name="BasicHttpBinding_IProcessDataWorkflow" /><!-- Modify address if you host the workflow service in the cloud, or if your Development Fabric is not listening on port 81. --></p>
+    <pre style="font-family: NSimSun; font-size: 13; color: black; background: white;"><span 
+        style="color:blue;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;!--</span><span style="color:green;">&nbsp;Modify&nbsp;address&nbsp;if&nbsp;you&nbsp;host&nbsp;the&nbsp;Workflow&nbsp;Service&nbsp;in&nbsp;the&nbsp;cloud,&nbsp;or&nbsp;if&nbsp;your&nbsp;Compute&nbsp;Emulator&nbsp;is&nbsp;not&nbsp;listening&nbsp;on&nbsp;port&nbsp;81.&nbsp;</span><span 
+        style="color:blue;">--&gt;</span>
+<span style="color:blue;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;</span><span style="color:#a31515;">endpoint</span><span 
+        style="color:blue;">&nbsp;</span><span style="color:red;">address</span><span 
+        style="color:blue;">=</span>&quot;<span style="color:blue;">http://127.0.0.1:81/ProcessDataWorkflowService.xamlx</span>&quot;
+<span style="color:blue;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color:red;">binding</span><span 
+        style="color:blue;">=</span>&quot;<span style="color:blue;">basicHttpBinding</span>&quot;<span 
+        style="color:blue;">&nbsp;</span><span style="color:red;">bindingConfiguration</span><span 
+        style="color:blue;">=</span>&quot;<span style="color:blue;">BasicHttpBinding_IService</span>&quot;
+<span style="color:blue;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color:red;">contract</span><span 
+        style="color:blue;">=</span>&quot;<span style="color:blue;">WorkflowServiceReference.IService</span>&quot;<span 
+        style="color:blue;">&nbsp;</span><span style="color:red;">name</span><span 
+        style="color:blue;">=</span>&quot;<span style="color:blue;">BasicHttpBinding_IService</span>&quot;<span 
+        style="color:blue;">&nbsp;/&gt;</span>
+</pre>
+	<p>
+		然后在Windows Azure本地计算虚拟机运行VBAZWorkflowService4项目，或者将解决方案打包并 部署到Windows Azure服务中.获取更多在本地或者云服务中运行Windows
+        Azure程序的信息，请 参阅Windows Azure文档: <a href="http://msdn.microsoft.com/en-us/library/ee405484.aspx">
+            http://msdn.microsoft.com/en-us/library/ee405484.aspx05484.aspx</a>.</p>
+    <p>
+        最后，运行Client项目检查workflow服务正常工作.</p>
+    <h2>
+        描述</h2>
+    <p>
+        本解决方案由3个项目组成.</p>
+    <h3>
+        VBAZWorkflowService4</h3>
+    <p>
+        云服务项目.当在虚拟机中测试时，请确认本项目替代了WorkflowServiceWebRole项目.</p>
+    <h3>
+        WorkflowServiceWebRole</h3>
+    <p>
+        Web Role项目.这是一个常规的ASP.NET项目，用来托管WCF Workflow Service.在Windows Azure中
+        托管Workflow Service与IIS中一样.服务契约详细内容在xamlx文件中.</p>
+    <p>
+        这部分同样没有特殊的配置.我们为了使用元数据，添加了一个默认的服务.</p>
+    <h3>
+        Client</h3>
+    <p>
+        用来调用WCF Workflow Service服务的客户端控制台程序.</p>
+</body>
+</html>

@@ -1,0 +1,104 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>Untitled Page</title>
+</head>
+<body>
+
+    <h3>
+        概述</h3>
+    <p>
+        这是AzureBingMaps的源代码. 你可以在 
+        <a href="http://blogs.msdn.com/b/windows-azure-support/archive/2010/08/11/bring-the-clouds-together-azure-bing-maps.aspx">
+        http://blogs.msdn.com/b/windows-azure-support/archive/2010/08/11/bring-the-clouds-together-azure-bing-maps.aspx</a> 
+        找到相关描述博文. 
+        我们建议您首先阅读博文,作为参考资料来使用这份代码.</p>
+    <h3>
+        系统需求</h3>
+    <p>
+        编译和运行此示例时, 你需要下列软件:</p>
+    <ul>
+        <li>Visual Studio 2010 和.NET 4</li>
+        <li>Windows Azure SDK v1.4:
+            <a href="http://www.microsoft.com/downloads/en/details.aspx?FamilyID=7a1089b6-4050-4307-86c4-9dadaa5ed018&amp;displaylang=en">
+            http://www.microsoft.com/downloads/en/details.aspx?FamilyID=7a1089b6-4050-4307-86c4-9dadaa5ed018&amp;displaylang=enn</a></li>
+        <li>Windows Azure AppFabric SDK 1.0 RTM:
+            <a href="http://www.microsoft.com/downloads/en/details.aspx?FamilyID=39856a03-1490-4283-908f-c8bf0bfad8a5&amp;displaylang=en">
+            http://www.microsoft.com/downloads/en/details.aspx?FamilyID=39856a03-1490-4283-908f-c8bf0bfad8a5&amp;displaylang=en</a></li>
+        <li>Windows Azure AppFabric Labs SDK:
+            <a href="http://www.microsoft.com/downloads/en/details.aspx?FamilyID=D89640FC-C552-446E-AEAD-B1E0D940F31B">
+            http://www.microsoft.com/downloads/en/details.aspx?FamilyID=D89640FC-C552-446E-AEAD-B1E0D940F31B</a></li>
+        <li>Windows Server AppFabric:
+            <a href="http://www.microsoft.com/downloads/en/details.aspx?displaylang=en&amp;FamilyID=467e5aa5-c25b-4c80-a6d2-9f8fb0f337d2">
+            http://www.microsoft.com/downloads/en/details.aspx?displaylang=en&amp;FamilyID=467e5aa5-c25b-4c80-a6d2-9f8fb0f337d2</a></li>
+        <li>Windows Identity Foundation Runtime:
+            <a href="http://www.microsoft.com/downloads/en/details.aspx?FamilyID=eb9c345f-e830-40b8-a5fe-ae7a864c4d76">
+            http://www.microsoft.com/downloads/en/details.aspx?FamilyID=eb9c345f-e830-40b8-a5fe-ae7a864c4d76</a></li>
+        <li>Windows Identity Foundation SDK:
+            <a href="http://www.microsoft.com/downloads/en/details.aspx?FamilyID=c148b2df-c7af-46bb-9162-2c9422208504">
+           http://www.microsoft.com/downloads/en/details.aspx?FamilyID=c148b2df-c7af-46bb-9162-2c9422208504</a></li>
+        <li>Windows Live SDK:
+            <a href="http://www.microsoft.com/downloads/en/details.aspx?FamilyID=9bc1e29e-3c0c-48b8-8148-5629c265300c">
+            http://www.microsoft.com/downloads/en/details.aspx?FamilyID=9bc1e29e-3c0c-48b8-8148-5629c265300c</a></li>
+        <li>Silverlight 4 SDK:
+            <a href="http://www.microsoft.com/downloads/en/details.aspx?FamilyID=b3deb194-ca86-4fb6-a716-b67c2604a139&amp;displaylang=en">
+            http://www.microsoft.com/downloads/en/details.aspx?FamilyID=b3deb194-ca86-4fb6-a716-b67c2604a139&amp;displaylang=en</a></li>
+        <li>Bing Maps Silverlight SDK:
+            <a href="http://www.microsoft.com/downloads/en/details.aspx?displaylang=en&amp;FamilyID=beb29d27-6f0c-494f-b028-1e0e3187e830">
+            http://www.microsoft.com/downloads/en/details.aspx?displaylang=en&amp;FamilyID=beb29d27-6f0c-494f-b028-1e0e3187e830</a></li>
+        <li>Windows Phone SDK: <a href="http://create.msdn.com/en-us/home/getting_started">
+            http://create.msdn.com/en-us/home/getting_startedted</a></li>
+        <li>Windows Phone SDK October update:
+            <a href="http://www.microsoft.com/downloads/en/details.aspx?FamilyID=49b9d0c5-6597-4313-912a-f0cca9c7d277">
+          http://www.microsoft.com/downloads/en/details.aspx?FamilyID=49b9d0c5-6597-4313-912a-f0cca9c7d277</a></li>
+        <li>Windows Phone SDK VB pack:
+            <a href="http://www.microsoft.com/downloads/en/details.aspx?FamilyID=4e97ea70-e479-4c05-814f-639d71690e5d&amp;displaylang=en">
+            http://www.microsoft.com/downloads/en/details.aspx?FamilyID=4e97ea70-e479-4c05-814f-639d71690e5d&amp;displaylang=en</a></li>
+        <li>OData for Windows Phone:
+            <a href="http://odata.codeplex.com/releases/view/54698#DownloadId=161862">
+            http://odata.codeplex.com/releases/view/54698#DownloadId=161862</a></li>
+        <li>SQL Server 2008 或 R2 用来本地模拟(备注, SQL Server 2005并不支持散列数据, 所以必需2008)</li>
+        <li>一个较新的浏览器比如IE 9</li>
+        <li>Windows Azure, Bing Maps, 和Windows Live Messenger Connect的有效账户.</li></ul>
+    <h3>
+        项目</h3>
+    <p>
+       解决方案中有6个项目:</p>
+    <ul>
+        <li>AzureBingMaps: Windows Azure云项目.</li>
+        <li>AzureBingMaps.WebRole: Web Role项目. 它包含下列组件:<ul>
+                <li>WCF数据服务: 在DataService目录下.</li>
+                <li>HTML客户端: HTML界面定义在HtmlClient.aspx中, 相应的JavaScript代码定义在Scripts\HtmlClient.js中.</li>
+                <li>Federation相关代码: 包括LoginPage, FederationCallbackHandler, 
+                    WindowsLiveProfile, 以及HTML/Silverlight客户端的后台代码.</li>
+            </ul>
+        </li>
+        <li>AzureBingMaps.DAL: 数据访问项目,包括SQL脚本和Entity Framework代码.</li>
+        <li>AzureBingMaps.UnitTest: 单元测试项目.</li>
+        <li>SilverlightClient: Silverlight项目.</li>
+        <li>WindowsPhoneClient: Windows Phone客户端.</li>
+    </ul>
+    <h3>
+        配置</h3>
+    <p>
+        编译和运行此示例时, 你必须修改配置以提供你自己的Azure, Bing Maps, 以及Windows Live Messenger Connect信息. 
+        一共有7处需要修改的地方:</p>
+    <ul>
+        <li>AzureBingMaps项目的ServiceDefinition.cscfg, 配置Windows Azure存储账户,远程桌面身份验证, SSL验证, 
+            以及远程桌面验证.</li>
+        <li>AzureBingMaps项目的Web.config.WebRole, 配置SQL Azure连接字符串, 
+            Windows Live Messenger Connect 信息, Windows Azure服务域, 
+            AppFabric命名空间, AppFabric 缓存身份验证, 本机密钥, WIF 验证, AppFabric ACS 验证.</li>
+        <li>AzureBingMaps项目的Scripts\HtmlClient.js.WebRole, 配置Bing Maps 身份验证.</li>
+        <li>如果你想运行单元测试, 配置AzureBingMaps.UnitTest的App.config中的连接字符串.</li>
+        <li>SilverlightClient项目的MainPage.xaml.cs, 配置Bing Maps 身份验证.</li>
+        <li>WindowsPhoneClient项目的MainPage.xaml.cs, 配置Bing Maps 身份验证.</li>
+        <li>WindowsPhoneClient项目的DataSource.cs, 配置WCF 数据服务地址.</li>
+    </ul>
+
+    <p>
+        此外, 特定的SDK(譬如Windows Live和AppFabric Labs) 并不会将所需的程序集安装到GAC中. 因此当你下载SDK后, 
+        你可能需要修改项目引用以指向正确的程序集引用.</p>
+
+</body>
+</html>

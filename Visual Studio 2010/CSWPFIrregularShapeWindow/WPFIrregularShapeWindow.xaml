@@ -1,0 +1,54 @@
+﻿<Window x:Class="CSWPFIrregularShapeWindow.WPFIrregularShapeWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="WPF不规则窗体" Height="350" Width="525" ButtonBase.Click="Window_Click">
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Opacity" Value="0.5" />
+            <Style.Triggers>
+
+                <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                    <EventTrigger.Actions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation
+                  Duration="0:0:0.2"
+                  Storyboard.TargetProperty="Height"
+                  To="80"  />
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger.Actions>
+                </EventTrigger>
+                <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                    <EventTrigger.Actions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation
+                  Duration="0:0:1"
+                  Storyboard.TargetProperty="Height"  />
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger.Actions>
+                </EventTrigger>
+            </Style.Triggers>
+
+        </Style>
+
+    </Window.Resources>
+    <Grid Margin="5">
+        <Grid.RowDefinitions>
+            <!--用户可以在这里进行自定义-->
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Button Height="60" Grid.Row="0" Tag="Ellipse Window">椭圆形窗体</Button>
+        <Button Height="60" Grid.Row="1" Tag="Rounded Corners Window">圆角窗体</Button>
+        <Button Height="60" Grid.Row="2" Tag="Popup Corners Window">对话窗体</Button>
+        <Button Height="60" Grid.Row="3" Tag="Triangle Corners Window" >三角形窗体</Button>
+        <Button Height="60" Grid.Row="4" Tag="Picture Based Windows" >图片背景窗体</Button>
+    </Grid>
+</Window>
+

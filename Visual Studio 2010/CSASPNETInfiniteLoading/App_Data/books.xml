@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<catalog>
+  <book id="bk101">
+    <author>Gambardella, Matthew</author>
+    <title>XML开发指南</title>
+    <genre>计算机</genre>
+    <price>44.95</price>
+    <publish_date>2000-10-01</publish_date>
+    <description>
+      深入剖析如何创建带有XML的
+      应用程序.
+    </description>
+  </book>
+  <book id="bk102">
+    <author>Ralls, Kim</author>
+    <title>午夜有雨</title>
+    <genre>科幻</genre>
+    <price>5.95</price>
+    <publish_date>2000-12-16</publish_date>
+    <description>
+      一个很久以前的建筑公司到处都是僵尸，
+      一个罪恶的女巫，和她的孩子是如何主宰 
+      这个世界.
+    </description>
+  </book>
+  <book id="bk103">
+    <author>Corets, Eva</author>
+    <title>玛伊芙的星座</title>
+    <genre>科幻</genre>
+    <price>5.95</price>
+    <publish_date>2000-11-17</publish_date>
+    <description>
+      在纳米技术社会崩溃以后，一个年轻的幸存者 
+      成了这个新社会的基础.     
+    </description>
+  </book>
+  <book id="bk104">
+    <author>Corets, Eva</author>
+    <title>奥伯龙的遗产</title>
+    <genre>科幻</genre>
+    <price>5.95</price>
+    <publish_date>2001-03-10</publish_date>
+    <description>
+        在英国的大灾难开始以后,只有奥伯龙才知道神秘代理人,
+        他帮助英国居民创造新的生活.        
+        玛伊芙的命运续集.
+    </description>
+  </book>
+  <book id="bk105">
+    <author>Corets, Eva</author>
+    <title>分裂的帝国</title>
+    <genre>科幻</genre>
+    <price>5.95</price>
+    <publish_date>2001-09-10</publish_date>
+    <description>
+        玛丽的两个女儿,她们是同父异母的姐妹,为了主宰英国相互争斗. 
+    </description>
+  </book>
+
+
+</catalog>
+

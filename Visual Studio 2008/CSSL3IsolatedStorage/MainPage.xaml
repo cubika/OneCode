@@ -1,0 +1,129 @@
+﻿<UserControl xmlns:controls="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls"
+			 x:Class="CSSL3IsolatedStorage.MainPage"
+			 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:win="clr-namespace:System.Windows;assembly=System.Windows.Controls"
+			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+			 xmlns:my="clr-namespace:CSSL3IsolatedStorage"
+			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 mc:Ignorable="d"
+			 d:DesignWidth="640"
+			 d:DesignHeight="480">
+	<UserControl.Resources>
+		<my:ImageConverter x:Name="ic1" />
+	</UserControl.Resources>
+    <Grid x:Name="LayoutRoot">
+        <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                  VerticalScrollBarVisibility="Auto">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition />
+                    <!--<RowDefinition Height="50" />-->
+                </Grid.RowDefinitions>
+                <StackPanel Width="600"
+					HorizontalAlignment="Left">
+                    <TextBlock FontSize="32"
+					   Text="独立存储器浏览器" />
+                    <TextBlock TextWrapping="Wrap"
+					   Foreground="Black"><Run Text="独立存储器使应用程序能为部分可信程序创建和维护一个安全的客户端虚拟文件系统。" /><LineBreak /><Run Text="" /><LineBreak /><Run Text="这个应用程序展示如何维护silverlight独立存储器。在下面左边，有一个树目录显示这个应用程序的独立存储器文件系统。在它的右边，显示全部对选定文件（可文件目录）可用的操作。" /><LineBreak /><Run Text="" /><LineBreak /><Run Text="IsolatedStorageSettings是一个保存在独立存储器中和被silverlight维护的目录。例如，它是一个存储配置的好地方。" /></TextBlock>
+                    <TextBlock Name="tbAppInfo"
+					   FontStyle="Italic" />
+                    <TextBlock Text=" " />
+                    <TextBlock Name="tbQuotaAvailable"
+					   TextWrapping="Wrap" />
+                    <Button Click="bnIncreaseQuota_Click"
+					Content="增加10MB空间"
+					Width="200"
+					HorizontalAlignment="Left" />
+                    <TextBlock Text=" " />
+                </StackPanel>
+
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="600" />
+                        <ColumnDefinition Width="200" />
+                    </Grid.ColumnDefinitions>
+                    <controls:TreeView Name="tvIsolatedStorage"
+							   SelectedItemChanged="TreeView_SelectedItemChanged">
+                        <controls:TreeView.ItemTemplate>
+                            <win:HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                                <StackPanel Orientation="Horizontal">
+                                    <Image HorizontalAlignment="Left"
+								   Width="16"
+								   Height="16"
+								   Source="{Binding Path=.,Converter={StaticResource ic1}}" />
+                                    <TextBlock Text="{Binding FileName}" />
+                                </StackPanel>
+                            </win:HierarchicalDataTemplate>
+                        </controls:TreeView.ItemTemplate>
+                    </controls:TreeView>
+                    <Grid Grid.Column="1">
+                        <StackPanel>
+                            <StackPanel x:Name="spOperationPanel">
+                                <TextBlock Text="操作:" />
+                                <Button x:Name="bnAddDir"
+								Content="增加目录"
+								Click="bnAddDir_Click" />
+                                <Button x:Name="bnAddFile"
+								Content="增加文件"
+								Click="bnAddFile_Click" />
+                                <Button x:Name="bnDelete"
+								Content="删除"
+								Click="bnDelete_Click" />
+                                <Button x:Name="bnSave"
+								Content="保存到本地磁盘"
+								Click="bnSave_Click" />
+                                <Button x:Name="bnPlay"
+								Content="播放"
+								Click="bnPlay_Click" />
+                            </StackPanel>
+                        </StackPanel>
+                    </Grid>
+                </Grid>
+            </Grid>
+        </ScrollViewer>
+        <Grid
+			  Background="#88000000"
+			  Name="gdDisable"
+			  d:IsHidden="True"
+			  Visibility="Collapsed">
+            <Border Background="#88000000"
+					Margin="10"
+					HorizontalAlignment="Center"
+					VerticalAlignment="Center"
+					CornerRadius="5"
+					Padding="5">
+                <Border.Effect>
+                    <DropShadowEffect />
+                </Border.Effect>
+                <Grid>
+                    <StackPanel Name="spCopyPanel"
+								Visibility="Collapsed">
+                        <TextBlock Foreground="Azure"
+								   Text="复制..." />
+                        <ProgressBar Height="20"
+									 Width="150"
+									 Name="pbCopyProgress"
+									 Maximum="100"
+									 Minimum="0" />
+                    </StackPanel>
+                    <Grid Name="gdPlayerPanel"
+						  Visibility="Collapsed">
+                        <TextBlock FontSize="16"
+								   Foreground="Azure"
+								   Text="播放     " />
+                        <Image Name="imgPlayer"
+							   Source="/Images/media.png" />
+                        <MediaElement Name="mePlayer" />
+                        <Button Content=" X "
+								Canvas.ZIndex="100"
+								VerticalAlignment="Top"
+								HorizontalAlignment="Right"
+								Click="bnClosePlayer_Click" />
+                    </Grid>
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
+</UserControl>

@@ -1,0 +1,33 @@
+﻿<UserControl x:Class="VBSL3SocketClient.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    mc:Ignorable="d" d:DesignWidth="640" d:DesignHeight="480">
+    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+        <Grid x:Name="LayoutRoot" MaxWidth="600" HorizontalAlignment="Left">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="60" />
+                <RowDefinition Height="80" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <TextBlock Text="Silverlight套接字客户端" FontSize="32"/>
+            <StackPanel Grid.Row="1">
+                <TextBlock Text="第一步，输入套接字服务器地址，然后点击“连接”按钮。"/>
+                <StackPanel Orientation="Horizontal">
+                    <TextBox Width="200" Name="tboxServerAddress" Text="127.0.0.1"/>
+                    <Button Content="连接" Name="btnConnect" Click="btnConnect_Click" Grid.Column="1"/>
+                </StackPanel>
+                <TextBlock Name="tbSocketStatus" Text="未连接." TextWrapping="Wrap" FontStyle="Italic"/>
+            </StackPanel>
+            <StackPanel Grid.Row="2">
+                <TextBlock TextWrapping="Wrap" Text="在套接字连接到服务器后，你就可以在文本框中输入文本，然后点击“发送”按钮来发送字符串消息到服务器。服务器将会接收消息，等待1秒后，然后回发给客户端。"/>
+                <StackPanel Orientation="Horizontal">
+                    <TextBox Name="tboxMessage" MaxLength="100" Width="200"/>
+                    <Button IsEnabled="False" Content="发送" Name="btnSend" Click="btnSend_Click"/>
+                </StackPanel>
+            </StackPanel>
+            <ListBox Name="lb1" Grid.Row="3" />
+        </Grid>
+    </ScrollViewer>
+</UserControl>

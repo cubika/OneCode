@@ -1,0 +1,838 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta content="en-us" http-equiv="Content-Language" />
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<title>SILVERLIGHT 应用</title>
+<style type="text/css">
+.MsoNormal {
+	margin: 0px;
+	background-color: #CCCCCC;
+}
+.auto-style1 {
+	margin-left: 40px;
+}
+.HeaderCaptionText,.title{color:#000;font-family:Arial,Helvetica,sans-serif;font-size:190%;font-style:normal;font-variant:normal;font-weight:bold;line-height:normal;margin:0 0 10px}</style>
+</head>
+
+<body>
+
+<h1>SILVERLIGHT 应用: CSSL4WCFNetTcp项目概述</h1>
+<h2>用法</h2>
+<p>Silverlight4支持传送netTcpBinding控件，这给我们提供了一个调用WCF双向通信的新途径。在这个示例中，我们创建了一个简单的天气预报应用来演示怎样在Silverlight中应用netTcp WCF。</p>
+<h2>先决条件</h2>
+<p>Visual Studio 2010的Silverlight 4工具<br />
+    <a href="http://www.microsoft.com/downloads/details.aspx?FamilyID=eff8a0da-0a4d-48e8-8366-6ddf2ecad801&amp;displaylang=en">
+    http://www.microsoft.com/downloads/details.aspx?FamilyID=eff8a0da-0a4d-48e8-8366-6ddf2ecad801&amp;displaylang=en</a></p>
+<p>Silverilght 4 运行时<br />
+<a href="http://silverlight.net/getstarted/">http://silverlight.net/getstarted/</a></p>
+<p>互联网信息服务 (IIS)<br />
+<a href="http://www.iis.net/">http://www.iis.net/</a></p>
+<h2>创建过程</h2>
+<p>为了演示Silverlight如何访问WCF，我们需要创建一个WCF服务器和一个Silverlight WCF客户端。这里我将创建过程分为三个步骤：</p>
+<ol>
+	<li><a href="#Creating_Duplex_WCF_service_with_netTcp_binding">创建支持netTcpBinding的WCF双向通信</a></li>
+	<li><a href="#Creating_Silverlight_WCF_client">创建Silverlight WCF客户端</a></li>
+	<li><a href="#Deploying_cross_domain_policy_file">部署跨域策略文件</a></li>
+</ol>
+<h3><a name="Creating_Duplex_WCF_service_with_netTcp_binding">创建带有netTcpBinding的WCF双向通信</a></h3>
+<p>1. 创建一个新的控制台项目，向项目中添加一个新的WCF服务并命名为WeatherService。</p>
+<p>2. 打开IWeatherService.cs，按以下方式定义服务协议：</p>
+<p class="MsoNormal">
+<span style="font-size:
+9.5pt;font-family:Consolas;color:blue">namespace</span><span style="font-size:
+9.5pt;font-family:Consolas"> NetTcpWCFService<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas">{<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;
+</span>[<span style="color:#2B91AF">ServiceContract</span>(CallbackContract=<span style="color:blue">typeof</span>(<span style="color:#2B91AF">IWeatherServiceCallback</span>))]<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;
+</span><span style="color:blue">public</span> <span style="color:blue">interface</span>
+<span style="color:#2B91AF">IWeatherService</span><o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;
+</span>{<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>[<span style="color:#2B91AF">OperationContract</span>(IsOneWay =
+<span style="color:blue">true</span>)]<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><span style="color:blue">void</span> Subscribe();<o:p></o:p></span></p>
+<p class="MsoNormal">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="auto-style1">&nbsp;&nbsp;&nbsp;&nbsp; 
+[OperationContract(IsOneWay = true)]</span><o:p></o:p></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><span style="color:blue">void</span> UnSubscribe();<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;
+</span>}<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;
+</span><span style="color:blue">public</span> <span style="color:blue">interface</span>
+<span style="color:#2B91AF">IWeatherServiceCallback</span><o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;
+</span>{<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>[<span style="color:#2B91AF">OperationContract</span>(IsOneWay=<span style="color:
+blue">true</span>)]<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><span style="color:blue">void</span> WeatherReport(<span style="color:blue">string</span> 
+report);<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;
+</span>}<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas">}<o:p></o:p></span></p>
+<p>3. 打开WeatherService.cs。用静态方法执行订阅服务。记得将service InstanceContextMode设为<em>PerSession</em>。</p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;
+</span>[<span style="color:#2B91AF">ServiceBehavior</span>(InstanceContextMode=<span style="color:#2B91AF">InstanceContextMode</span>.PerSession)]<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;
+</span><span style="color:blue">public</span> <span style="color:blue">class</span>
+<span style="color:#2B91AF">WeatherService</span> : <span style="color:#2B91AF">
+IWeatherService</span><o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;
+</span>{<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><span style="color:blue">static</span> <span style="color:blue">event</span>
+<span style="color:#2B91AF">EventHandler</span>&lt;<span style="color:#2B91AF">WeatherEventArgs</span>&gt; 
+WeatherReporting;<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><span style="color:#2B91AF">IWeatherServiceCallback</span> _callback;<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><span style="color:blue">public</span> <span style="color:blue">void</span> 
+Subscribe()<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>{<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>_callback = <span style="color:#2B91AF">OperationContext</span>.Current.GetCallbackChannel&lt;<span style="color:#2B91AF">IWeatherServiceCallback</span>&gt;();<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>WeatherReporting += <span style="color:blue">new</span>
+<span style="color:#2B91AF">EventHandler</span>&lt;<span style="color:#2B91AF">WeatherEventArgs</span>&gt;(WeatherService_WeatherReporting);<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>}<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><span style="color:blue">public</span> <span style="color:blue">void</span> 
+UnSubscribe()<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>{<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>WeatherReporting -= <span style="color:blue">new</span>
+<span style="color:#2B91AF">EventHandler</span>&lt;<span style="color:#2B91AF">WeatherEventArgs</span>&gt;(WeatherService_WeatherReporting);<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>}<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><span style="color:blue">void</span> WeatherService_WeatherReporting(<span style="color:blue">object</span> 
+sender, <span style="color:#2B91AF">WeatherEventArgs</span> e)<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>{<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><span style="color:green">// 在应用回调前需要检查回调通道的状态。</span><o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><span style="color:blue">if</span> (((<span style="color:#2B91AF">ICommunicationObject</span>)_callback).State 
+== <span style="color:#2B91AF">CommunicationState</span>.Opened)<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>_callback.WeatherReport(e.WeatherReport);<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><span style="color:blue">else</span><o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>UnSubscribe();<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>}<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;
+</span>}<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;
+</span><span style="color:blue">class</span> <span style="color:#2B91AF">
+WeatherEventArgs</span>:<span style="color:#2B91AF">EventArgs</span><o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;
+</span>{<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><span style="color:blue">public</span> <span style="color:blue">string</span> 
+WeatherReport{<span style="color:blue">set</span>;<span style="color:blue">get</span>;}<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;
+</span>}<o:p></o:p></span></p>
+<p>4. 创建一个单独的线程来循环生成虚拟天气报告。</p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><span style="color:blue">static</span> WeatherService()<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>{<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><span style="color:#2B91AF">ThreadPool</span>.QueueUserWorkItem(<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><span style="color:blue">new</span> <span style="color:#2B91AF">
+WaitCallback</span>(<span style="color:blue">delegate</span><o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>{<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><span style="color:blue">string</span>[] weatherArray = {
+<span style="color:#A31515">&quot;Sunny&quot;</span>, <span style="color:#A31515">&quot;Windy&quot;</span>,
+<span style="color:#A31515">&quot;Snow&quot;</span>, <span style="color:#A31515">&quot;Rainy&quot;</span> 
+};<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><span style="color:#2B91AF">Random</span> rand =
+<span style="color:
+blue">new</span> <span style="color:#2B91AF">Random</span>();<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><span style="color:blue">while</span> (<span style="color:blue">true</span>)<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>{<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><span style="color:
+#2B91AF">Thread</span>.Sleep(1000);<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><span style="color:
+blue">if</span> (WeatherReporting != <span style="color:blue">null</span>)<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>WeatherReporting(<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><span style="color:blue">null</span>,<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><span style="color:blue">new</span> <span style="color:#2B91AF">
+WeatherEventArgs</span><o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>{<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>WeatherReport = 
+weatherArray[rand.Next(weatherArray.Length)]<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>});<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>}<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>}));<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>}<o:p></o:p></span></p>
+<p>5. 配置app.config文件，向WCF添加一个netTcpbinding终结点。</p>
+<p class="MsoNormal">
+<span style="font-size:
+9.5pt;font-family:Consolas;color:blue"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;
+</span>&lt;</span><span style="font-size:9.5pt;font-family:Consolas;color:#A31515">system.serviceModel</span><span style="font-size:9.5pt;font-family:Consolas;color:blue">&gt;</span><span style="font-size:9.5pt;font-family:Consolas"><o:p></o:p></span></p>
+<p class="MsoNormal">
+<span style="font-size:
+9.5pt;font-family:Consolas;color:blue"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>&lt;</span><span style="font-size:9.5pt;font-family:Consolas;color:#A31515">behaviors</span><span style="font-size:9.5pt;font-family:Consolas;color:blue">&gt;</span><span style="font-size:9.5pt;font-family:Consolas"><o:p></o:p></span></p>
+<p class="MsoNormal">
+<span style="font-size:
+9.5pt;font-family:Consolas;color:blue"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>&lt;</span><span style="font-size:
+9.5pt;font-family:Consolas;color:#A31515">serviceBehaviors</span><span style="font-size:9.5pt;font-family:Consolas;color:blue">&gt;</span><span style="font-size:9.5pt;font-family:Consolas"><o:p></o:p></span></p>
+<p class="MsoNormal">
+<span style="font-size:
+9.5pt;font-family:Consolas;color:blue"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>&lt;</span><span style="font-size:9.5pt;
+font-family:Consolas;color:#A31515">behavior</span><span style="font-size:9.5pt;
+font-family:Consolas;color:blue"> </span>
+<span style="font-size:9.5pt;
+font-family:Consolas;color:red">name</span><span style="font-size:9.5pt;
+font-family:Consolas;color:blue">=</span><span style="font-size:9.5pt;
+font-family:Consolas">&quot;<span style="color:blue">NetTcpWCFService.WeatherServiceBehavior</span>&quot;<span style="color:blue">&gt;</span><o:p></o:p></span></p>
+<p class="MsoNormal">
+<span style="font-size:
+9.5pt;font-family:Consolas;color:blue"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>&lt;</span><span style="font-size:9.5pt;font-family:Consolas;color:#A31515">serviceMetadata</span><span style="font-size:9.5pt;font-family:Consolas;color:blue"> 
+/&gt;</span><span style="font-size:9.5pt;font-family:Consolas"><o:p></o:p></span></p>
+<p class="MsoNormal">
+<span style="font-size:
+9.5pt;font-family:Consolas;color:blue"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>&lt;</span><span style="font-size:9.5pt;font-family:Consolas;color:#A31515">serviceDebug</span><span style="font-size:9.5pt;font-family:Consolas;color:blue">
+</span><span style="font-size:9.5pt;font-family:Consolas;color:red">
+includeExceptionDetailInFaults</span><span style="font-size:9.5pt;font-family:Consolas;color:blue">=</span><span style="font-size:9.5pt;font-family:Consolas">&quot;<span style="color:blue">false</span>&quot;<span style="color:blue"> 
+/&gt;</span><o:p></o:p></span></p>
+<p class="MsoNormal">
+<span style="font-size:
+9.5pt;font-family:Consolas;color:blue"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>&lt;/</span><span style="font-size:9.5pt;font-family:Consolas;color:#A31515">behavior</span><span style="font-size:9.5pt;font-family:Consolas;color:blue">&gt;</span><span style="font-size:9.5pt;font-family:Consolas"><o:p></o:p></span></p>
+<p class="MsoNormal">
+<span style="font-size:
+9.5pt;font-family:Consolas;color:blue"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>&lt;/</span><span style="font-size:
+9.5pt;font-family:Consolas;color:#A31515">serviceBehaviors</span><span style="font-size:9.5pt;font-family:Consolas;color:blue">&gt;</span><span style="font-size:9.5pt;font-family:Consolas"><o:p></o:p></span></p>
+<p class="MsoNormal">
+<span style="font-size:
+9.5pt;font-family:Consolas;color:blue"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>&lt;/</span><span style="font-size:9.5pt;font-family:Consolas;
+color:#A31515">behaviors</span><span style="font-size:9.5pt;font-family:Consolas;
+color:blue">&gt;</span><span style="font-size:9.5pt;font-family:Consolas"><o:p></o:p></span></p>
+<p class="MsoNormal">
+<span style="font-size:
+9.5pt;font-family:Consolas;color:blue"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>&lt;</span><span style="font-size:9.5pt;font-family:Consolas;color:#A31515">services</span><span style="font-size:9.5pt;font-family:Consolas;color:blue">&gt;</span><span style="font-size:9.5pt;font-family:Consolas"><o:p></o:p></span></p>
+<p class="MsoNormal">
+<span style="font-size:
+9.5pt;font-family:Consolas;color:blue"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>&lt;</span><span style="font-size:9.5pt;font-family:Consolas;color:#A31515">service</span><span style="font-size:9.5pt;font-family:Consolas;color:blue">
+</span><span style="font-size:9.5pt;font-family:Consolas;color:red">
+behaviorConfiguration</span><span style="font-size:9.5pt;font-family:Consolas;color:blue">=</span><span style="font-size:9.5pt;font-family:Consolas">&quot;<span style="color:blue">NetTcpWCFService.WeatherServiceBehavior</span>&quot;<o:p></o:p></span></p>
+<p class="MsoNormal">
+<span style="font-size:
+9.5pt;font-family:Consolas;color:blue"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style="font-size:9.5pt;
+font-family:Consolas;color:red">name</span><span style="font-size:9.5pt;
+font-family:Consolas;color:blue">=</span><span style="font-size:9.5pt;
+font-family:Consolas">&quot;<span style="color:blue">NetTcpWCFService.WeatherService</span>&quot;<span style="color:blue">&gt;</span><o:p></o:p></span></p>
+<p class="MsoNormal">
+<span style="font-size:
+9.5pt;font-family:Consolas;color:blue"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>&lt;</span><span style="font-size:9.5pt;font-family:Consolas;color:#A31515">endpoint</span><span style="font-size:9.5pt;font-family:Consolas;color:blue">
+</span><span style="font-size:9.5pt;font-family:Consolas;color:red">address</span><span style="font-size:9.5pt;font-family:Consolas;color:blue">=</span><span style="font-size:9.5pt;font-family:Consolas">&quot;&quot;<span style="color:blue">
+</span><span style="color:red">binding</span><span style="color:blue">=</span>&quot;<span style="color:blue">netTcpBinding</span>&quot;<span style="color:blue">
+</span><span style="color:red">bindingConfiguration</span><span style="color:blue">=</span>&quot;<span style="color:blue">b1</span>&quot;<o:p></o:p></span></p>
+<p class="MsoNormal">
+<span style="font-size:
+9.5pt;font-family:Consolas;color:blue"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style="font-size:
+9.5pt;font-family:Consolas;color:red">contract</span><span style="font-size:
+9.5pt;font-family:Consolas;color:blue">=</span><span style="font-size:9.5pt;
+font-family:Consolas">&quot;<span style="color:blue">NetTcpWCFService.IWeatherService</span>&quot;<span style="color:blue"> 
+/&gt;</span><o:p></o:p></span></p>
+<p class="MsoNormal">
+<span style="font-size:
+9.5pt;font-family:Consolas;color:blue"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>&lt;</span><span style="font-size:9.5pt;font-family:Consolas;color:#A31515">endpoint</span><span style="font-size:9.5pt;font-family:Consolas;color:blue">
+</span><span style="font-size:9.5pt;font-family:Consolas;color:red">address</span><span style="font-size:9.5pt;font-family:Consolas;color:blue">=</span><span style="font-size:9.5pt;font-family:Consolas">&quot;<span style="color:blue">mex</span>&quot;<span style="color:blue">
+</span><span style="color:red">binding</span><span style="color:blue">=</span>&quot;<span style="color:blue">mexTcpBinding</span>&quot;<span style="color:blue">
+</span><span style="color:red">contract</span><span style="color:blue">=</span>&quot;<span style="color:blue">IMetadataExchange</span>&quot;<span style="color:blue"> 
+/&gt;</span><o:p></o:p></span></p>
+<p class="MsoNormal">
+<span style="font-size:
+9.5pt;font-family:Consolas;color:blue"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>&lt;</span><span style="font-size:9.5pt;font-family:Consolas;color:#A31515">host</span><span style="font-size:9.5pt;font-family:Consolas;color:blue">&gt;</span><span style="font-size:9.5pt;font-family:Consolas"><o:p></o:p></span></p>
+<p class="MsoNormal">
+<span style="font-size:
+9.5pt;font-family:Consolas;color:blue"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>&lt;</span><span style="font-size:
+9.5pt;font-family:Consolas;color:#A31515">baseAddresses</span><span style="font-size:9.5pt;font-family:Consolas;color:blue">&gt;</span><span style="font-size:9.5pt;font-family:Consolas"><o:p></o:p></span></p>
+<p class="MsoNormal">
+<span style="font-size:
+9.5pt;font-family:Consolas;color:blue"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>&lt;</span><span style="font-size:9.5pt;font-family:Consolas;color:#A31515">add</span><span style="font-size:9.5pt;font-family:Consolas;color:blue">
+</span><span style="font-size:9.5pt;font-family:Consolas;color:red">baseAddress</span><span style="font-size:9.5pt;font-family:Consolas;color:blue">=</span><span style="font-size:9.5pt;font-family:Consolas">&quot;<span style="color:blue">net.tcp://localhost:4504/WeatherService</span>&quot;<span style="color:blue"> 
+/&gt;</span><o:p></o:p></span></p>
+<p class="MsoNormal">
+<span style="font-size:
+9.5pt;font-family:Consolas;color:blue"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>&lt;/</span><span style="font-size:
+9.5pt;font-family:Consolas;color:#A31515">baseAddresses</span><span style="font-size:9.5pt;font-family:Consolas;color:blue">&gt;</span><span style="font-size:9.5pt;font-family:Consolas"><o:p></o:p></span></p>
+<p class="MsoNormal">
+<span style="font-size:
+9.5pt;font-family:Consolas;color:blue"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>&lt;/</span><span style="font-size:9.5pt;font-family:Consolas;
+color:#A31515">host</span><span style="font-size:9.5pt;font-family:Consolas;
+color:blue">&gt;</span><span style="font-size:9.5pt;font-family:Consolas"><o:p></o:p></span></p>
+<p class="MsoNormal">
+<span style="font-size:
+9.5pt;font-family:Consolas;color:blue"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>&lt;/</span><span style="font-size:9.5pt;font-family:Consolas;
+color:#A31515">service</span><span style="font-size:9.5pt;font-family:Consolas;
+color:blue">&gt;</span><span style="font-size:9.5pt;font-family:Consolas"><o:p></o:p></span></p>
+<p class="MsoNormal">
+<span style="font-size:
+9.5pt;font-family:Consolas;color:blue"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>&lt;/</span><span style="font-size:9.5pt;font-family:Consolas;
+color:#A31515">services</span><span style="font-size:9.5pt;font-family:Consolas;
+color:blue">&gt;</span><span style="font-size:9.5pt;font-family:Consolas"><o:p></o:p></span></p>
+<p class="MsoNormal">
+<span style="font-size:
+9.5pt;font-family:Consolas;color:blue"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>&lt;</span><span style="font-size:9.5pt;font-family:Consolas;color:#A31515">bindings</span><span style="font-size:9.5pt;font-family:Consolas;color:blue">&gt;</span><span style="font-size:9.5pt;font-family:Consolas"><o:p></o:p></span></p>
+<p class="MsoNormal">
+<span style="font-size:
+9.5pt;font-family:Consolas;color:blue"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>&lt;</span><span style="font-size:9.5pt;font-family:Consolas;color:#A31515">netTcpBinding</span><span style="font-size:9.5pt;font-family:Consolas;color:blue">&gt;</span><span style="font-size:9.5pt;font-family:Consolas"><o:p></o:p></span></p>
+<p class="MsoNormal">
+<span style="font-size:
+9.5pt;font-family:Consolas;color:blue"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>&lt;</span><span style="font-size:9.5pt;font-family:Consolas;color:#A31515">binding</span><span style="font-size:9.5pt;font-family:Consolas;color:blue">
+</span><span style="font-size:9.5pt;font-family:Consolas;color:red">name</span><span style="font-size:9.5pt;font-family:Consolas;color:blue">=</span><span style="font-size:9.5pt;font-family:Consolas">&quot;<span style="color:blue">b1</span>&quot;<span style="color:blue">&gt;</span><o:p></o:p></span></p>
+<p class="MsoNormal">
+<span style="font-size:
+9.5pt;font-family:Consolas;color:blue"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>&lt;</span><span style="font-size:
+9.5pt;font-family:Consolas;color:#A31515">security</span><span style="font-size:9.5pt;font-family:Consolas;color:blue">
+</span><span style="font-size:9.5pt;font-family:Consolas;color:red">mode</span><span style="font-size:9.5pt;font-family:Consolas;color:blue">=</span><span style="font-size:9.5pt;font-family:Consolas">&quot;<span style="color:blue">None</span>&quot;<span style="color:blue">/&gt;</span><o:p></o:p></span></p>
+<p class="MsoNormal">
+<span style="font-size:
+9.5pt;font-family:Consolas;color:blue"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>&lt;/</span><span style="font-size:9.5pt;font-family:Consolas;
+color:#A31515">binding</span><span style="font-size:9.5pt;font-family:Consolas;
+color:blue">&gt;</span><span style="font-size:9.5pt;font-family:Consolas"><o:p></o:p></span></p>
+<p class="MsoNormal">
+<span style="font-size:
+9.5pt;font-family:Consolas;color:blue"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>&lt;/</span><span style="font-size:9.5pt;font-family:Consolas;
+color:#A31515">netTcpBinding</span><span style="font-size:9.5pt;font-family:
+Consolas;color:blue">&gt;</span><span style="font-size:9.5pt;font-family:Consolas"><o:p></o:p></span></p>
+<p class="MsoNormal">
+<span style="font-size:
+9.5pt;font-family:Consolas;color:blue"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>&lt;/</span><span style="font-size:9.5pt;font-family:Consolas;
+color:#A31515">bindings</span><span style="font-size:9.5pt;font-family:Consolas;
+color:blue">&gt;</span><span style="font-size:9.5pt;font-family:Consolas"><o:p></o:p></span></p>
+<p class="MsoNormal">
+<span style="font-size:
+9.5pt;font-family:Consolas;color:blue"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;
+</span>&lt;/</span><span style="font-size:9.5pt;font-family:Consolas;
+color:#A31515">system.serviceModel</span><span style="font-size:9.5pt;
+font-family:Consolas;color:blue">&gt;<o:p></o:p></span></p>
+<p class="auto-style1"><em>注意，只有4502-4534端口允许Silverlight访问，我们需要客户访问策略文件来允许Silverlight访问，请参照<a href="#Deploying_cross_domain_policy_file">部署跨域策略文件</a>。</em></p>
+<p>6. 在Main方法中启动ServiceHost。</p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><span style="color:blue">static</span> <span style="color:blue">void</span> 
+Main(<span style="color:blue">string</span>[] args)<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>{<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><span style="color:blue">using</span> (<span style="color:blue">var</span> 
+host = <span style="color:blue">new</span> <span style="color:#2B91AF">
+ServiceHost</span>(<span style="color:blue">typeof</span>(<span style="color:#2B91AF">WeatherService</span>)))<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>{<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>host.Open();<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><span style="color:#2B91AF">Console</span>.WriteLine(<span style="color:#A31515">&quot;Service 
+is running...&quot;</span>);<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><span style="color:#2B91AF">Console</span>.WriteLine(<span style="color:#A31515">&quot;Service 
+address: &quot;</span>+host.BaseAddresses[0]);<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><span style="color:#2B91AF">Console</span>.Read();<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>}<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>}<o:p></o:p></span></p>
+<h3><a name="Creating_Silverlight_WCF_client">创建Silverlight WCF客户端</a></h3>
+<p>创建一个应用WCF的Silverlight应用。我们需要一个按钮来订阅或取消订阅服务，还有一个列表框用来显示从服务器端获取的天气预报信息。</p>
+<p><img alt="Silverlight application UI layout" src="images/sl_layout.jpg" /></p>
+<p>1. 创建一个新的Silverlight项目。</p>
+<p>2. 打开MainPage.xaml文件，向MainPage中添加Button，TextBlock和ListBox并调整显示格式。</p>
+<p class="MsoNormal">
+<span style="font-size:
+9.5pt;font-family:Consolas;color:#A31515"><span style="mso-spacerun:yes">&nbsp;
+</span></span><span style="font-size:9.5pt;font-family:Consolas;color:blue">&lt;</span><span style="font-size:9.5pt;font-family:Consolas;color:#A31515">Grid</span><span style="font-size:9.5pt;font-family:Consolas;color:red"> 
+x</span><span style="font-size:9.5pt;font-family:Consolas;color:blue">:</span><span style="font-size:9.5pt;font-family:Consolas;color:red">Name</span><span style="font-size:9.5pt;font-family:Consolas;color:blue">=&quot;LayoutRoot&quot;</span><span style="font-size:9.5pt;font-family:Consolas;color:red"> 
+Background</span><span style="font-size:9.5pt;font-family:Consolas;color:blue">=&quot;White&quot;&gt;</span><span style="font-size:9.5pt;font-family:Consolas"><o:p></o:p></span></p>
+<p class="MsoNormal">
+<span style="font-size:
+9.5pt;font-family:Consolas;color:#A31515"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style="font-size:9.5pt;
+font-family:Consolas;color:blue">&lt;</span><span style="font-size:9.5pt;
+font-family:Consolas;color:#A31515">Grid.RowDefinitions</span><span style="font-size:9.5pt;font-family:Consolas;color:blue">&gt;</span><span style="font-size:9.5pt;font-family:Consolas"><o:p></o:p></span></p>
+<p class="MsoNormal">
+<span style="font-size:
+9.5pt;font-family:Consolas;color:#A31515"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style="font-size:9.5pt;
+font-family:Consolas;color:blue">&lt;</span><span style="font-size:9.5pt;
+font-family:Consolas;color:#A31515">RowDefinition</span><span style="font-size:
+9.5pt;font-family:Consolas;color:red"> Height</span><span style="font-size:
+9.5pt;font-family:Consolas;color:blue">=&quot;46*&quot; /&gt;</span><span style="font-size:9.5pt;font-family:Consolas"><o:p></o:p></span></p>
+<p class="MsoNormal">
+<span style="font-size:
+9.5pt;font-family:Consolas;color:#A31515"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style="font-size:9.5pt;font-family:Consolas;color:blue">&lt;</span><span style="font-size:9.5pt;font-family:Consolas;color:#A31515">RowDefinition</span><span style="font-size:9.5pt;font-family:Consolas;color:red"> 
+Height</span><span style="font-size:9.5pt;font-family:Consolas;color:blue">=&quot;26*&quot; 
+/&gt;</span><span style="font-size:9.5pt;font-family:Consolas"><o:p></o:p></span></p>
+<p class="MsoNormal">
+<span style="font-size:
+9.5pt;font-family:Consolas;color:#A31515"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style="font-size:9.5pt;
+font-family:Consolas;color:blue">&lt;</span><span style="font-size:9.5pt;
+font-family:Consolas;color:#A31515">RowDefinition</span><span style="font-size:
+9.5pt;font-family:Consolas;color:red"> Height</span><span style="font-size:
+9.5pt;font-family:Consolas;color:blue">=&quot;228*&quot; /&gt;</span><span style="font-size:9.5pt;font-family:Consolas"><o:p></o:p></span></p>
+<p class="MsoNormal">
+<span style="font-size:
+9.5pt;font-family:Consolas;color:#A31515"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style="font-size:9.5pt;
+font-family:Consolas;color:blue">&lt;/</span><span style="font-size:9.5pt;
+font-family:Consolas;color:#A31515">Grid.RowDefinitions</span><span style="font-size:9.5pt;font-family:Consolas;color:blue">&gt;</span><span style="font-size:9.5pt;font-family:Consolas"><o:p></o:p></span></p>
+<p class="MsoNormal">
+<span style="font-size:
+9.5pt;font-family:Consolas;color:#A31515"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style="font-size:9.5pt;
+font-family:Consolas;color:blue">&lt;</span><span style="font-size:9.5pt;
+font-family:Consolas;color:#A31515">TextBlock</span><span style="font-size:
+9.5pt;font-family:Consolas;color:red"> Text</span><span style="font-size:9.5pt;
+font-family:Consolas;color:blue">=&quot;Silverlight NetTcp Sample&quot;</span><span style="font-size:9.5pt;font-family:Consolas;color:red"> 
+Grid.Row</span><span style="font-size:9.5pt;font-family:Consolas;color:blue">=&quot;0&quot;</span><span style="font-size:9.5pt;font-family:Consolas;color:red"> 
+Margin</span><span style="font-size:9.5pt;font-family:Consolas;color:blue">=&quot;0,0,0,10&quot;</span><span style="font-size:9.5pt;font-family:Consolas;color:red"> 
+FontSize</span><span style="font-size:9.5pt;font-family:Consolas;color:blue">=&quot;24&quot;/&gt;</span><span style="font-size:9.5pt;font-family:Consolas"><o:p></o:p></span></p>
+<p class="MsoNormal">
+<span style="font-size:
+9.5pt;font-family:Consolas;color:#A31515"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style="font-size:9.5pt;
+font-family:Consolas;color:blue">&lt;</span><span style="font-size:9.5pt;
+font-family:Consolas;color:#A31515">StackPanel</span><span style="font-size:
+9.5pt;font-family:Consolas;color:red"> Orientation</span><span style="font-size:9.5pt;font-family:Consolas;color:blue">=&quot;Horizontal&quot;</span><span style="font-size:9.5pt;font-family:Consolas;color:red"> 
+Grid.Row</span><span style="font-size:9.5pt;font-family:Consolas;color:blue">=&quot;1&quot;&gt;</span><span style="font-size:9.5pt;font-family:Consolas"><o:p></o:p></span></p>
+<p class="MsoNormal">
+<span style="font-size:
+9.5pt;font-family:Consolas;color:#A31515"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style="font-size:
+9.5pt;font-family:Consolas;color:blue">&lt;</span><span style="font-size:9.5pt;
+font-family:Consolas;color:#A31515">Button</span><span style="font-size:9.5pt;
+font-family:Consolas;color:red"> Content</span><span style="font-size:9.5pt;
+font-family:Consolas;color:blue">=&quot;Subscribe weather report&quot;</span><span style="font-size:9.5pt;font-family:Consolas;color:red"> 
+Name</span><span style="font-size:9.5pt;font-family:Consolas;color:blue">=&quot;btnSubscribe&quot;</span><span style="font-size:9.5pt;font-family:Consolas;color:red"> 
+Click</span><span style="font-size:9.5pt;font-family:Consolas;color:blue">=&quot;Button_Click&quot;/&gt;</span><span style="font-size:9.5pt;font-family:Consolas"><o:p></o:p></span></p>
+<p class="MsoNormal">
+<span style="font-size:
+9.5pt;font-family:Consolas;color:#A31515"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style="font-size:
+9.5pt;font-family:Consolas;color:blue">&lt;</span><span style="font-size:9.5pt;
+font-family:Consolas;color:#A31515">TextBlock</span><span style="font-size:
+9.5pt;font-family:Consolas;color:red"> VerticalAlignment</span><span style="font-size:9.5pt;font-family:Consolas;color:blue">=&quot;Center&quot;</span><span style="font-size:9.5pt;font-family:Consolas;color:red"> 
+FontStyle</span><span style="font-size:9.5pt;font-family:Consolas;color:blue">=&quot;Italic&quot;</span><span style="font-size:9.5pt;font-family:Consolas;color:red"> 
+Foreground</span><span style="font-size:9.5pt;font-family:Consolas;color:blue">=&quot;Red&quot;</span><span style="font-size:9.5pt;font-family:Consolas;color:red"> 
+Margin</span><span style="font-size:9.5pt;font-family:Consolas;color:blue">=&quot;5,0,0,0&quot;</span><span style="font-size:9.5pt;font-family:Consolas;color:red"> 
+Name</span><span style="font-size:9.5pt;font-family:Consolas;color:blue">=&quot;tbInfo&quot;/&gt;</span><span style="font-size:9.5pt;font-family:Consolas"><o:p></o:p></span></p>
+<p class="MsoNormal">
+<span style="font-size:
+9.5pt;font-family:Consolas;color:#A31515"><span style="mso-spacerun:yes">&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></span><span style="font-size:9.5pt;font-family:Consolas;color:blue">&lt;/</span><span style="font-size:9.5pt;font-family:Consolas;color:#A31515">StackPanel</span><span style="font-size:9.5pt;font-family:Consolas;color:blue">&gt;</span><span style="font-size:9.5pt;font-family:Consolas"><o:p></o:p></span></p>
+<p class="MsoNormal">
+<span style="font-size:
+9.5pt;font-family:Consolas;color:#A31515"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style="font-size:9.5pt;
+font-family:Consolas;color:blue">&lt;</span><span style="font-size:9.5pt;
+font-family:Consolas;color:#A31515">ListBox</span><span style="font-size:9.5pt;
+font-family:Consolas;color:red"> Name</span><span style="font-size:9.5pt;
+font-family:Consolas;color:blue">=&quot;lbWeather&quot;</span><span style="font-size:9.5pt;font-family:Consolas;color:red"> 
+Grid.Row</span><span style="font-size:9.5pt;font-family:Consolas;color:blue">=&quot;2&quot;</span><span style="font-size:9.5pt;font-family:Consolas;color:red"> 
+Margin</span><span style="font-size:9.5pt;font-family:Consolas;color:blue">=&quot;0,5,0,0&quot;/&gt;</span><span style="font-size:9.5pt;font-family:Consolas"><o:p></o:p></span></p>
+<p class="MsoNormal">
+<span style="font-size:
+9.5pt;font-family:Consolas;color:#A31515"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;
+</span></span><span style="font-size:9.5pt;font-family:Consolas;color:blue">&lt;/</span><span style="font-size:9.5pt;font-family:Consolas;color:#A31515">Grid</span><span style="font-size:9.5pt;font-family:Consolas;color:blue">&gt;<o:p></o:p></span></p>
+<p class="MsoNormal"><o:p>&nbsp;</o:p></p>
+<p>3. 打开MainPage.vb文件，在加载事件中初始化WCF代理。</p>
+<p class="MsoNormal">
+<span style="font-size:
+9.5pt;font-family:Consolas;color:blue">Partial</span><span style="font-size:
+9.5pt;font-family:Consolas"> <span style="color:blue">Public</span>
+<span style="color:blue">Class</span> <span style="color:#2B91AF">MainPage</span><o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;
+</span><span style="color:blue">Inherits</span> <span style="color:#2B91AF">
+UserControl</span><o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;
+</span><span style="color:blue">Implements</span> <span style="color:#2B91AF">
+IWeatherServiceCallback</span><o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;
+</span><span style="color:blue">Public</span> <span style="color:blue">Sub</span>
+<span style="color:blue">New</span>()<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>InitializeComponent()<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><span style="color:blue">AddHandler</span> <span style="color:blue">Me</span>.Loaded,
+<span style="color:blue">AddressOf</span> MainPage_Loaded<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;
+</span><span style="color:blue">End</span> <span style="color:blue">Sub</span><o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;
+</span><span style="color:blue">Private</span> _client <span style="color:blue">
+As</span> <span style="color:#2B91AF">WeatherServiceClient</span><o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;
+</span><span style="color:blue">Private</span> <span style="color:blue">Sub</span> 
+MainPage_Loaded(<span style="color:blue">ByVal</span> sender
+<span style="color:blue">As</span> <span style="color:blue">Object</span>,
+<span style="color:blue">ByVal</span> e <span style="color:blue">As</span>
+<span style="color:#2B91AF">RoutedEventArgs</span>)<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>_client = <span style="color:blue">New</span> <span style="color:#2B91AF">
+WeatherServiceClient</span>(<span style="color:blue">New</span> 
+System.ServiceModel.InstanceContext(<span style="color:blue">Me</span>))<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><span style="color:blue">AddHandler</span> _client.SubscribeCompleted,
+<span style="color:blue">AddressOf</span> _client_SubscribeCompleted<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><span style="color:blue">AddHandler</span> _client.UnSubscribeCompleted,
+<span style="color:blue">AddressOf</span> _client_UnSubscribeCompleted<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;
+</span><span style="color:blue">End</span> <span style="color:blue">Sub</span><o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;
+</span><span style="color:blue">Private</span> <span style="color:blue">Sub</span> 
+_client_UnSubscribeCompleted(<span style="color:blue">ByVal</span> sender
+<span style="color:blue">As</span> <span style="color:blue">Object</span>,
+<span style="color:blue">ByVal</span> e <span style="color:blue">As</span> 
+System.ComponentModel.AsyncCompletedEventArgs)<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><span style="color:blue">If</span> e.[Error] <span style="color:blue">Is</span>
+<span style="color:blue">Nothing</span> <span style="color:blue">Then</span><o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>_subscribed = <span style="color:blue">False</span><o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>btnSubscribe.Content = <span style="color:#A31515">&quot;订阅天气报告&quot;</span><o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>tbInfo.Text = <span style="color:#A31515">&quot;&quot;</span><o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><span style="color:blue">Else</span><o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>tbInfo.Text = <span style="color:#A31515">&quot;无法连接到服务器。&quot;</span><o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><span style="color:blue">End</span> <span style="color:blue">If</span><o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>btnSubscribe.IsEnabled = <span style="color:blue">True</span><o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;
+</span><span style="color:blue">End</span> <span style="color:blue">Sub</span><o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;
+</span><span style="color:blue">Private</span> <span style="color:blue">Sub</span> 
+_client_SubscribeCompleted(<span style="color:blue">ByVal</span> sender
+<span style="color:blue">As</span> <span style="color:blue">Object</span>,
+<span style="color:blue">ByVal</span> e <span style="color:blue">As</span> 
+System.ComponentModel.AsyncCompletedEventArgs)<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><span style="color:blue">If</span> e.[Error] <span style="color:blue">Is</span>
+<span style="color:blue">Nothing</span> <span style="color:blue">Then</span><o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>_subscribed = <span style="color:blue">True</span><o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>btnSubscribe.Content = <span style="color:#A31515">&quot;取消订阅天气报告&quot;</span><o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>tbInfo.Text = <span style="color:#A31515">&quot;&quot;</span><o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><span style="color:blue">Else</span><o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>tbInfo.Text = <span style="color:#A31515">&quot;无法连接到服务器&quot;</span><o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><span style="color:blue">End</span> <span style="color:blue">If</span><o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>btnSubscribe.IsEnabled = <span style="color:blue">True</span><o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp; &nbsp;</span><span style="color:blue">End</span>
+<span style="color:blue">Sub</span><o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><o:p>&nbsp;</o:p><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;
+</span><span style="color:green">&#39; 回调时显示天气报告</span><o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;
+</span><span style="color:blue">Public</span> <span style="color:blue">Sub</span> 
+WeatherReport(<span style="color:blue">ByVal</span> report
+<span style="color:blue">As</span> <span style="color:blue">String</span>)
+<span style="color:blue">Implements</span> <span style="color:#2B91AF">
+IWeatherServiceCallback</span>.WeatherReport<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>lbWeather.Items.Insert(0, <span style="color:blue">New</span>
+<span style="color:#2B91AF">ListBoxItem</span>() <span style="color:blue">With</span> 
+{ _<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>.Content = <span style="color:blue">String</span>.Format(<span style="color:#A31515">&quot;{0} 
+{1}&quot;</span>, DateTime.Now, report) _<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>})<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;
+</span><span style="color:blue">End</span> <span style="color:blue">Sub</span><o:p></o:p></span></p>
+<p class="MsoNormal">
+<span style="font-size:
+9.5pt;font-family:Consolas;color:blue">End</span><span style="font-size:9.5pt;
+font-family:Consolas"> <span style="color:blue">Class<o:p></o:p></span></span></p>
+<p class="MsoNormal"><o:p>&nbsp;</o:p></p>
+<p>4. 添加按钮单击事件。</p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;
+</span><span style="color:blue">Private</span> _subscribed
+<span style="color:blue">As</span> <span style="color:blue">Boolean</span><o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;
+</span><span style="color:blue">Private</span> <span style="color:blue">Sub</span> 
+Button_Click(<span style="color:blue">ByVal</span> sender
+<span style="color:blue">As</span> <span style="color:blue">Object</span>,
+<span style="color:blue">ByVal</span> e <span style="color:blue">As</span>
+<span style="color:#2B91AF">RoutedEventArgs</span>)<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><span style="color:blue">If</span> <span style="color:blue">Not</span> 
+_subscribed <span style="color:blue">Then</span><o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>_client.SubscribeAsync()<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><span style="color:blue">Else</span><o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>_client.UnSubscribeAsync()<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><span style="color:blue">End</span> <span style="color:blue">If</span><o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>btnSubscribe.IsEnabled = <span style="color:blue">False</span><o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size:
+9.5pt;font-family:Consolas"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;
+</span><span style="color:blue">End</span> <span style="color:blue">Sub</span><o:p></o:p></span></p>
+<p>至此，Silverlight WCF客户端创建完成。我们还需要最后一个步骤就可以允许Silverlight访问了。</p>
+<h3><a name="Deploying_cross_domain_policy_file">部署跨域策略文件</a></h3>
+<p>1. 创建一个xml文件，命名为&quot;clientaccesspolicy.xml&quot;，按以下方法设置文件内容。</p>
+<p class="MsoNormal">
+<span style="font-size: 9.5pt; font-family: Consolas; color: blue">&lt;</span><span style="font-size: 9.5pt; font-family: Consolas; color: #A31515">access-policy</span><span style="font-size: 9.5pt; font-family: Consolas; color: blue">&gt;</span><span style="font-size: 9.5pt; font-family: Consolas"><o:p></o:p></span></p>
+<p class="MsoNormal">
+<span style="font-size: 9.5pt; font-family: Consolas; color: blue">
+<span style="mso-spacerun: yes">&nbsp; </span>&lt;</span><span style="font-size: 9.5pt; font-family: Consolas; color: #A31515">cross-domain-access</span><span style="font-size: 9.5pt; font-family: Consolas; color: blue">&gt;</span><span style="font-size: 9.5pt; font-family: Consolas"><o:p></o:p></span></p>
+<p class="MsoNormal">
+<span style="font-size: 9.5pt; font-family: Consolas; color: blue">
+<span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </span>&lt;</span><span style="font-size: 9.5pt; font-family: Consolas; color: #A31515">policy</span><span style="font-size: 9.5pt; font-family: Consolas; color: blue">&gt;</span><span style="font-size: 9.5pt; font-family: Consolas"><o:p></o:p></span></p>
+<p class="MsoNormal">
+<span style="font-size: 9.5pt; font-family: Consolas; color: blue">
+<span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>&lt;</span><span style="font-size: 9.5pt; font-family: Consolas; color: #A31515">allow-from</span><span style="font-size: 9.5pt; font-family: Consolas; color: blue">&gt;</span><span style="font-size: 9.5pt; font-family: Consolas"><o:p></o:p></span></p>
+<p class="MsoNormal">
+<span style="font-size: 9.5pt; font-family: Consolas; color: blue">
+<span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>&lt;</span><span style="font-size: 9.5pt; font-family: Consolas; color: #A31515">domain</span><span style="font-size: 9.5pt; font-family: Consolas; color: blue">
+</span><span style="font-size: 9.5pt; font-family: Consolas; color: red">uri</span><span style="font-size: 9.5pt; font-family: Consolas; color: blue">=</span><span style="font-size: 9.5pt; font-family: Consolas">&quot;<span style="color: blue">*</span>&quot;<span style="color: blue">/&gt;</span><o:p></o:p></span></p>
+<p class="MsoNormal">
+<span style="font-size: 9.5pt; font-family: Consolas; color: blue">
+<span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>&lt;/</span><span style="font-size: 9.5pt; font-family: Consolas; color: #A31515">allow-from</span><span style="font-size: 9.5pt; font-family: Consolas; color: blue">&gt;</span><span style="font-size: 9.5pt; font-family: Consolas"><o:p></o:p></span></p>
+<p class="MsoNormal">
+<span style="font-size: 9.5pt; font-family: Consolas; color: blue">
+<span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>&lt;</span><span style="font-size: 9.5pt; font-family: Consolas; color: #A31515">grant-to</span><span style="font-size: 9.5pt; font-family: Consolas; color: blue">&gt;</span><span style="font-size: 9.5pt; font-family: Consolas"><o:p></o:p></span></p>
+<p class="MsoNormal">
+<span style="font-size: 9.5pt; font-family: Consolas; color: blue">
+<span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>&lt;</span><span style="font-size: 9.5pt; font-family: Consolas; color: #A31515">socket-resource</span><span style="font-size: 9.5pt; font-family: Consolas; color: blue">
+</span><span style="font-size: 9.5pt; font-family: Consolas; color: red">port</span><span style="font-size: 9.5pt; font-family: Consolas; color: blue">=</span><span style="font-size: 9.5pt; font-family: Consolas">&quot;<span style="color: blue">4502-4506</span>&quot;<span style="color: blue">
+</span><span style="color: red">protocol</span><span style="color: blue">=</span>&quot;<span style="color: blue">tcp</span>&quot;<span style="color: blue"> 
+/&gt;</span><o:p></o:p></span></p>
+<p class="MsoNormal">
+<span style="font-size: 9.5pt; font-family: Consolas; color: blue">
+<span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>&lt;/</span><span style="font-size: 9.5pt; font-family: Consolas; color: #A31515">grant-to</span><span style="font-size: 9.5pt; font-family: Consolas; color: blue">&gt;</span><span style="font-size: 9.5pt; font-family: Consolas"><o:p></o:p></span></p>
+<p class="MsoNormal">
+<span style="font-size: 9.5pt; font-family: Consolas; color: blue">
+<span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </span>&lt;/</span><span style="font-size: 9.5pt; font-family: Consolas; color: #A31515">policy</span><span style="font-size: 9.5pt; font-family: Consolas; color: blue">&gt;</span><span style="font-size: 9.5pt; font-family: Consolas"><o:p></o:p></span></p>
+<p class="MsoNormal">
+<span style="font-size: 9.5pt; font-family: Consolas; color: blue">
+<span style="mso-spacerun: yes">&nbsp; </span>&lt;/</span><span style="font-size: 9.5pt; font-family: Consolas; color: #A31515">cross-domain-access</span><span style="font-size: 9.5pt; font-family: Consolas; color: blue">&gt;</span><span style="font-size: 9.5pt; font-family: Consolas"><o:p></o:p></span></p>
+<p class="MsoNormal">
+<span style="font-size: 9.5pt; font-family: Consolas; color: blue">&lt;/</span><span style="font-size: 9.5pt; font-family: Consolas; color: #A31515">access-policy</span><span style="font-size: 9.5pt; font-family: Consolas; color: blue">&gt;</span><span style="font-size: 9.5pt; font-family: Consolas"><o:p></o:p></span></p>
+<p>以上代码定义了Silverlight用户可以使用4502-4506端口从任何一个域访问服务器。</p>
+<p>2. 找到服务器根目录的物理路径(默认为C:\inetpub\wwwroot)，将策略文件至于此文件夹下。在浏览器中打开<a href="http://localhost/clientaccesspolicy.xml">http://localhost/clientaccesspolicy.xml</a>,如果可以看到页面的内容就代表已经部署成功。</p>
+<h2>演示</h2>
+<p>测试项目</p>
+<p>1. 打开VBSL4WCFNetTcp solution，生成。</p>
+<p>2. 启动WCF双向通信。运行在VBSL4WCFNetTcp\NetTcpWCFService\bin\debug目录下的NetTcpWCFService.exe。</p>
+<p>
+<img alt="Self hosted wcf" height="105" src="images/service_console.jpg" /></p>
+<p>3. 在Visual Studio中右键单击&quot;VBSL4WCFNetTcpTestPage.aspx&quot;，选择&quot;View in Browser&quot;。</p>
+<p>4. 在Silverlight应用加载后，点击“订阅天气预报”按钮，如果所有的代码和配置都正确，你会看到一个列表框每隔一秒增加一条新的纪录。</p>
+<p>
+<img alt="Silverlight application running" src="images/sl_run.jpg" />&nbsp;</p>
+<h2>参考资料</h2>
+<p>Building and Accessing Duplex Services<br />
+<a href="http://msdn.microsoft.com/en-us/library/cc645026(VS.95).aspx">
+http://msdn.microsoft.com/en-us/library/cc645026(VS.95).aspx</a></p>
+<p>Network Security Access Restrictions in Silverlight<br />
+<a href="http://msdn.microsoft.com/en-us/library/cc645026(VS.95).aspx">
+http://msdn.microsoft.com/en-us/library/cc645026(VS.95).aspx</a></p>
+<p>&nbsp;</p>
+
+</body>
+
+</html>

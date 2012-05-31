@@ -1,0 +1,149 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VideoStoryCreator", "VideoStoryCreator\VideoStoryCreator.csproj", "{722B7B3B-E068-4157-82D5-1D161DC55712}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NativeVideoEncoder", "NativeVideoEncoder\NativeVideoEncoder.vcxproj", "{56579820-4AD3-434B-9027-15B3CD2E9A89}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{951F74D7-B7E6-41A0-B97F-B089C358CB61}"
+	ProjectSection(SolutionItems) = preProject
+		ReadMe.docx = ReadMe.docx
+		ReadMe.txt = ReadMe.txt
+	EndProjectSection
+EndProject
+Project("{CC5FD16D-436D-48AD-A40C-5A424C6E3E79}") = "StoryCreatorCloudService", "StoryCreatorCloudService\StoryCreatorCloudService.ccproj", "{4DE8ED2C-9035-4576-8D81-9E3C83198047}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StoryCreatorWebRole", "StoryCreatorWebRole\StoryCreatorWebRole.csproj", "{AF60AB4F-C70A-4A2E-B9F2-04357FF0DC3A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VideoEncodingWorkerRole", "VideoEncodingWorkerRole\VideoEncodingWorkerRole.csproj", "{B11A312C-38A5-424B-8A27-C9FB79D003A1}"
+	ProjectSection(ProjectDependencies) = postProject
+		{56579820-4AD3-434B-9027-15B3CD2E9A89} = {56579820-4AD3-434B-9027-15B3CD2E9A89}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StoryDataModel", "StoryDataModel\StoryDataModel.csproj", "{136CE69D-74C5-42E7-A02E-744B5AACEDC7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Specs", "Specs", "{B4C2A2DE-00B6-4923-80D3-74A81CE5D795}"
+	ProjectSection(SolutionItems) = preProject
+		Specs\Activation Deactivation.docx = Specs\Activation Deactivation.docx
+		Specs\Architecture.docx = Specs\Architecture.docx
+		Specs\Choose Photo Page.docx = Specs\Choose Photo Page.docx
+		Specs\Compose Page.docx = Specs\Compose Page.docx
+		Specs\Native Encoder.docx = Specs\Native Encoder.docx
+		Specs\Native XML Parser.docx = Specs\Native XML Parser.docx
+		Specs\PreviewPage.docx = Specs\PreviewPage.docx
+		Specs\Resize Photo.docx = Specs\Resize Photo.docx
+		Specs\Transition (Managed).docx = Specs\Transition (Managed).docx
+		Specs\Transition (Native).docx = Specs\Transition (Native).docx
+		Specs\Web Role Service.docx = Specs\Web Role Service.docx
+		Specs\Worker Role.docx = Specs\Worker Role.docx
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 8
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://allen-pc04:8080/tfs/story%20creator
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = CloudTest\\CloudTest.csproj
+		SccProjectName1 = CloudTest
+		SccLocalPath1 = CloudTest
+		SccProjectUniqueName2 = NativeVideoEncoder\\NativeVideoEncoder.vcxproj
+		SccProjectName2 = NativeVideoEncoder
+		SccLocalPath2 = NativeVideoEncoder
+		SccProjectUniqueName3 = StoryCreatorCloudService\\StoryCreatorCloudService.ccproj
+		SccProjectName3 = StoryCreatorCloudService
+		SccLocalPath3 = StoryCreatorCloudService
+		SccProjectUniqueName4 = StoryCreatorWebRole\\StoryCreatorWebRole.csproj
+		SccProjectName4 = StoryCreatorWebRole
+		SccLocalPath4 = StoryCreatorWebRole
+		SccProjectUniqueName5 = StoryDataModel\\StoryDataModel.csproj
+		SccProjectName5 = StoryDataModel
+		SccLocalPath5 = StoryDataModel
+		SccProjectUniqueName6 = VideoEncodingWorkerRole\\VideoEncodingWorkerRole.csproj
+		SccProjectName6 = VideoEncodingWorkerRole
+		SccLocalPath6 = VideoEncodingWorkerRole
+		SccProjectUniqueName7 = VideoStoryCreator\\VideoStoryCreator.csproj
+		SccProjectName7 = VideoStoryCreator
+		SccLocalPath7 = VideoStoryCreator
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|Mixed Platforms = Debug|Mixed Platforms
+		Debug|Win32 = Debug|Win32
+		Release|Any CPU = Release|Any CPU
+		Release|Mixed Platforms = Release|Mixed Platforms
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{722B7B3B-E068-4157-82D5-1D161DC55712}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{722B7B3B-E068-4157-82D5-1D161DC55712}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{722B7B3B-E068-4157-82D5-1D161DC55712}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{722B7B3B-E068-4157-82D5-1D161DC55712}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{722B7B3B-E068-4157-82D5-1D161DC55712}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{722B7B3B-E068-4157-82D5-1D161DC55712}.Debug|Mixed Platforms.Deploy.0 = Debug|Any CPU
+		{722B7B3B-E068-4157-82D5-1D161DC55712}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{722B7B3B-E068-4157-82D5-1D161DC55712}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{722B7B3B-E068-4157-82D5-1D161DC55712}.Release|Any CPU.Build.0 = Release|Any CPU
+		{722B7B3B-E068-4157-82D5-1D161DC55712}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{722B7B3B-E068-4157-82D5-1D161DC55712}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{722B7B3B-E068-4157-82D5-1D161DC55712}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{722B7B3B-E068-4157-82D5-1D161DC55712}.Release|Mixed Platforms.Deploy.0 = Release|Any CPU
+		{722B7B3B-E068-4157-82D5-1D161DC55712}.Release|Win32.ActiveCfg = Release|Any CPU
+		{56579820-4AD3-434B-9027-15B3CD2E9A89}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{56579820-4AD3-434B-9027-15B3CD2E9A89}.Debug|Mixed Platforms.ActiveCfg = Debug|x64
+		{56579820-4AD3-434B-9027-15B3CD2E9A89}.Debug|Mixed Platforms.Build.0 = Debug|x64
+		{56579820-4AD3-434B-9027-15B3CD2E9A89}.Debug|Win32.ActiveCfg = Debug|Win32
+		{56579820-4AD3-434B-9027-15B3CD2E9A89}.Debug|Win32.Build.0 = Debug|Win32
+		{56579820-4AD3-434B-9027-15B3CD2E9A89}.Release|Any CPU.ActiveCfg = Release|Win32
+		{56579820-4AD3-434B-9027-15B3CD2E9A89}.Release|Mixed Platforms.ActiveCfg = Release|x64
+		{56579820-4AD3-434B-9027-15B3CD2E9A89}.Release|Mixed Platforms.Build.0 = Release|x64
+		{56579820-4AD3-434B-9027-15B3CD2E9A89}.Release|Win32.ActiveCfg = Release|Win32
+		{56579820-4AD3-434B-9027-15B3CD2E9A89}.Release|Win32.Build.0 = Release|Win32
+		{4DE8ED2C-9035-4576-8D81-9E3C83198047}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4DE8ED2C-9035-4576-8D81-9E3C83198047}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4DE8ED2C-9035-4576-8D81-9E3C83198047}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{4DE8ED2C-9035-4576-8D81-9E3C83198047}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{4DE8ED2C-9035-4576-8D81-9E3C83198047}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{4DE8ED2C-9035-4576-8D81-9E3C83198047}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4DE8ED2C-9035-4576-8D81-9E3C83198047}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4DE8ED2C-9035-4576-8D81-9E3C83198047}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{4DE8ED2C-9035-4576-8D81-9E3C83198047}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{4DE8ED2C-9035-4576-8D81-9E3C83198047}.Release|Win32.ActiveCfg = Release|Any CPU
+		{AF60AB4F-C70A-4A2E-B9F2-04357FF0DC3A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF60AB4F-C70A-4A2E-B9F2-04357FF0DC3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF60AB4F-C70A-4A2E-B9F2-04357FF0DC3A}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{AF60AB4F-C70A-4A2E-B9F2-04357FF0DC3A}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{AF60AB4F-C70A-4A2E-B9F2-04357FF0DC3A}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{AF60AB4F-C70A-4A2E-B9F2-04357FF0DC3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF60AB4F-C70A-4A2E-B9F2-04357FF0DC3A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF60AB4F-C70A-4A2E-B9F2-04357FF0DC3A}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{AF60AB4F-C70A-4A2E-B9F2-04357FF0DC3A}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{AF60AB4F-C70A-4A2E-B9F2-04357FF0DC3A}.Release|Win32.ActiveCfg = Release|Any CPU
+		{B11A312C-38A5-424B-8A27-C9FB79D003A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B11A312C-38A5-424B-8A27-C9FB79D003A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B11A312C-38A5-424B-8A27-C9FB79D003A1}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{B11A312C-38A5-424B-8A27-C9FB79D003A1}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{B11A312C-38A5-424B-8A27-C9FB79D003A1}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{B11A312C-38A5-424B-8A27-C9FB79D003A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B11A312C-38A5-424B-8A27-C9FB79D003A1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B11A312C-38A5-424B-8A27-C9FB79D003A1}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{B11A312C-38A5-424B-8A27-C9FB79D003A1}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{B11A312C-38A5-424B-8A27-C9FB79D003A1}.Release|Win32.ActiveCfg = Release|Any CPU
+		{136CE69D-74C5-42E7-A02E-744B5AACEDC7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{136CE69D-74C5-42E7-A02E-744B5AACEDC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{136CE69D-74C5-42E7-A02E-744B5AACEDC7}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{136CE69D-74C5-42E7-A02E-744B5AACEDC7}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{136CE69D-74C5-42E7-A02E-744B5AACEDC7}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{136CE69D-74C5-42E7-A02E-744B5AACEDC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{136CE69D-74C5-42E7-A02E-744B5AACEDC7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{136CE69D-74C5-42E7-A02E-744B5AACEDC7}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{136CE69D-74C5-42E7-A02E-744B5AACEDC7}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{136CE69D-74C5-42E7-A02E-744B5AACEDC7}.Release|Win32.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B4C2A2DE-00B6-4923-80D3-74A81CE5D795} = {951F74D7-B7E6-41A0-B97F-B089C358CB61}
+	EndGlobalSection
+EndGlobal

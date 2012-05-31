@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Root>
+  <Person>
+    <Name>安吉尔</Name>
+    <Age>23</Age>
+    <Country>美国</Country>
+    <Comment>无</Comment>
+  </Person>
+
+  <Person>
+    <Name>比尔</Name>
+    <Age>41</Age>
+    <Country>美国</Country>
+    <Comment>无</Comment>
+  </Person>
+
+  <Person>
+    <Name>南希</Name>
+    <Age>21</Age>
+    <Country>中国</Country>
+    <Comment>无</Comment>
+  </Person>
+
+  <Person>
+    <Name>章</Name>
+    <Age>33</Age>
+    <Country>中国</Country>
+    <Comment>无</Comment>
+  </Person>
+
+  <Person>
+    <Name>樱</Name>
+    <Age>18</Age>
+    <Country>日本</Country>
+    <Comment>无</Comment>
+  </Person>
+</Root>

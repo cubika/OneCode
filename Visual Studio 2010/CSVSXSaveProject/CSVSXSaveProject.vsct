@@ -1,0 +1,136 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CommandTable xmlns="http://schemas.microsoft.com/VisualStudio/2005-10-18/CommandTable" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <!-- 该文件定义了实际的布局和类型的命令。它分为不同的部分（如命令的定义，命令的位置等等）
+       每个都含有一个特定的属性集合。在每节之前，请参阅有关如何使用它更多细节的评论。 -->
+
+  <!-- VSCT编译器（在VisualStudio中，能将文件转换成二进制格式的工具）具有在vsct文件上运行
+       一个预处理的能力;这个预处理（通常）是C++预处理器，因此它可以在C++文件中使用相同的语法来定义宏。
+       我们在这里使用这个编译器的能力，来处理里面的文件，包括一些文件定义的常量。 -->
+
+  <!-- 这个文件用来定义所有VisualStudio所暴露出来的命令的ID. -->
+  <Extern href="stdidcmd.h"/>
+
+  <!-- 这个头文件包含shell提供的菜单命令ID -->
+  <Extern href="vsshlids.h"/>
+
+  <!--一些特定的VSCT常量的定义。在此示例中，我们使用guidOfficeIcon团队内部的ID。 -->
+  <Extern href="msobtnid.h"/>
+
+
+  <!--我们的命令中包含在菜单和菜单组中定义的部分。本节将使用全球唯一标识符识别的包中定义的命令。 -->
+  <Commands package="guidCSVSXSaveProjectPkg">
+    
+    <!-- 在这一节里，我们有不同的子部分：分别是菜单、菜单组、按钮（实际的命令）、组合和位图。
+         每个元素都会被一个独特的全球唯一标识符和数字标识符确定对应一个命令ID;标识符、全球唯一标识符部分
+         通常被称为“命令集”，用于集合一个逻辑上相关的的群体内不同的命令，你的包应该定义自己的命令，
+         避免与其他包中定义的命令ID碰撞。 -->
+
+    
+    <!-- 在本节中，您可以定义新的菜单组。菜单组其他菜单或按钮（命令）的容器，从视觉角度来看，你可以看到组中的两条线之间包
+       含了菜单的一部分。一组的父级必须是一个菜单。 -->
+    <Groups>
+      
+      <Group guid="guidCSVSXSaveProjectCmdSet" id="CSVSXSaveProjectGroup" priority="0x0600">
+      <Parent guid="guidSHLMainMenu" id="IDM_VS_MENU_FILE"/>
+      </Group>
+      
+     
+      <Group guid="guidCSVSXSaveProjectContextCmdSet" id="menuidCSVSXSaveProjectContextGroup" priority="0x01">
+        <Parent guid="guidSolutionExplorerMenu" id="menuidSolutionExplorerMenu"/>
+      </Group>
+     
+
+    </Groups>
+    
+    <!-- 按钮部分。 -->
+    <!-- 本节定义的用户可以交互的元素，如菜单命令、工具栏按钮和组合框。 -->
+    <Buttons>
+      <!-- 要定义一个菜单组，你必须指定其ID，父菜单和它的显示优先级。命令的可见和启用是默认的。如果您需要更改可视度和状态等等，您可以使用命令标志节点。
+          您可以通过以下方法添加多个命令标志节点:
+              <CommandFlag>DefaultInvisible</CommandFlag>
+              <CommandFlag>DynamicVisibility</CommandFlag>
+          如果你不想你的命令旁边有图像，可以删除图标节点，或将其设为<Icon guid="guidOfficeIcon" id="msotcidNoIcon" /> -->
+       
+      <!-- 修改组菜单 ID --> 
+      <Button guid="guidCSVSXSaveProjectCmdSet" id="cmdidCSVSXSaveProjectCommandID"
+              priority="0x0100" type="Button">
+        <Parent guid="guidCSVSXSaveProjectCmdSet" id="CSVSXSaveProjectGroup" />
+        <Icon guid="guidImages" id="bmpPic1" />
+        
+        <!-- 有关命令菜单中添加动态能见度。 -->
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        
+        <Strings>
+          <CommandName>cmdidCSVSXSaveProjectCommandID</CommandName>
+          <ButtonText>CSVSXSaveProject</ButtonText>
+        </Strings>
+      
+      </Button>
+
+      <Button guid="guidCSVSXSaveProjectContextCmdSet" id="cmdidCSVSXSaveProjectContextCommandID" 
+              priority="0x0" type="Button">
+        <Parent guid="guidCSVSXSaveProjectContextCmdSet" id="menuidCSVSXSaveProjectContextGroup"/>
+          <Icon guid="guidImages" id="bmpPic2"/>
+          <Strings>
+            <CommandName>cmdidCSVSXSaveProjectContextCommandID</CommandName>
+            <ButtonText>CSVSXSaveProject</ButtonText>
+          </Strings>
+      </Button>
+
+
+    </Buttons>
+   
+    <!-- 位图的部分是用来定义位图，这是为命令所使用的 -->
+    <Bitmaps>
+      <!-- 位图ID的定义与其他的定义方法有点不一样：该声明从一个位图条的ID的向导开始，然后含有
+           位图的位图条有一个资源ID。一个按钮的内部有元素的数字ID。注意：元素的ID必须
+           是位图条内实际的基于1的位图的索引 -->
+      <Bitmap guid="guidImages" href="Resources\Images_32bit.bmp" usedList="bmpPic1, bmpPic2, bmpPicSearch, bmpPicX, bmpPicArrows"/>
+
+    </Bitmaps>
+ 
+  </Commands>
+
+  <!-- 动态的可视性 -->
+  <VisibilityConstraints>
+    <VisibilityItem guid="guidCSVSXSaveProjectCmdSet" id="cmdidCSVSXSaveProjectCommandID" 
+                    context="UICONTEXT_SolutionExists"/>
+    </VisibilityConstraints>
+
+    <Symbols>
+    <!-- 这是包的全球唯一标识符。 -->
+    <GuidSymbol name="guidCSVSXSaveProjectPkg" value="{78f74c84-6262-4828-a0a3-49639de84066}" />
+    
+    <!-- 这是用来使上下文菜单命令结合在一起的全球唯一标识符 -->
+    <GuidSymbol name="guidCSVSXSaveProjectCmdSet" value="{3a929003-5d71-4994-8101-736f12c868be}">
+
+     <!-- 修改组菜单名称 --> 
+      <IDSymbol name="CSVSXSaveProjectGroup" value="0x1020" />
+      <IDSymbol name="cmdidCSVSXSaveProjectCommandID" value="0x0100" />
+    </GuidSymbol>
+    
+    <!-- 添加代码，以便您参考。 -->
+    <GuidSymbol name="guidCSVSXSaveProjectContextCmdSet" value="{48F743BB-19DB-499A-A760-8AC746A638C9}">
+      <IDSymbol name="menuidCSVSXSaveProjectContextGroup" value="0x1020"/>
+      <IDSymbol name="cmdidCSVSXSaveProjectContextCommandID" value="0x0101"/>
+    </GuidSymbol>
+    
+    <GuidSymbol name="guidImages" value="{4209e5c1-aa10-459c-8f17-3b1a389a7970}" >
+      <IDSymbol name="bmpPic1" value="1" />
+      <IDSymbol name="bmpPic2" value="2" />
+      <IDSymbol name="bmpPicSearch" value="3" />
+      <IDSymbol name="bmpPicX" value="4" />
+      <IDSymbol name="bmpPicArrows" value="5" />
+    </GuidSymbol>
+
+
+   
+    <!-- 定义父类组 -->
+    <GuidSymbol name="guidSolutionExplorerMenu" value="{D309F791-903F-11D0-9EFC-00A0C911004F}">
+      <IDSymbol name="menuidSolutionExplorerMenu" value="1026" />
+    </GuidSymbol>
+    
+  </Symbols>
+
+</CommandTable>

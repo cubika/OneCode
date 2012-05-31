@@ -1,0 +1,42 @@
+﻿<UserControl x:Class="CSSL3Text.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    mc:Ignorable="d" d:DesignWidth="640" d:DesignHeight="480" Loaded="Page_Loaded">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel x:Name="LayoutRoot">
+            <TextBlock Style="{StaticResource Paragraph1}" TextWrapping="Wrap" Text="通过代码使用文本"/>
+            <TextBlock Style="{StaticResource Parapraph2}" Text="创建文本对象" TextWrapping="Wrap"/>
+            <!-- 以下部分展示如何使用代码创建一个文本对象。 请参照后台代码的CreateSimpleTextBlock方法 -->
+            <TextBlock TextWrapping="Wrap" Text="如何创建一个文本对象,请参照以下代码："/>
+            <TextBox Style="{StaticResource NoBorderTextBoxStyle}" IsReadOnly="True" Text="   TextBlock simpleTextBlock = new TextBlock() { Text = &quot;Simple TextBlock&quot; };&#xa;   this.simpleTBPlaceHolder.Children.Add(simpleTextBlock);" TextWrapping="Wrap"/>
+            <TextBlock Text="结果：" TextWrapping="Wrap"/>
+            <StackPanel x:Name="simpleTBPlaceHolder"/>
+
+            <!-- 以下部分展示如何创建一个复杂的文本对象。 请参照后台代码中的CreateComplexBlock方法 -->
+            <TextBlock Margin="0,5,0,0" Text="使用Run对象创建一个复杂文本对象,请参照以下代码：" TextWrapping="Wrap"/>
+            <TextBox Style="{StaticResource NoBorderTextBoxStyle}" IsReadOnly="True" Text="   TextBlock complexTextBlock = new TextBlock();&#xa;   Run paragraph1 = new Run() { Text = &quot;Paragraph1&quot; };&#xa;   LineBreak lineBreak = new LineBreak();&#xa;   Run paragraph2 = new Run() { Text = &quot;Paragraph2&quot; };&#xa;   complexTextBlock.Inlines.Add(paragraph1);&#xa;   complexTextBlock.Inlines.Add(lineBreak);&#xa;   complexTextBlock.Inlines.Add(paragraph2);&#xa;   this.complexTBPlaceHolder.Children.Add(complexTextBlock);" TextWrapping="Wrap"/>
+            <TextBlock Text="结果：" TextWrapping="Wrap"/>
+            <StackPanel x:Name="complexTBPlaceHolder"/>
+
+            <!-- 以下部分展示如何自定义字体样式。请参照后台代码中的FormatText方法 -->
+            <TextBlock Margin="0,10,0,0" Style="{StaticResource Parapraph2}" Text="自定义字体样式" TextWrapping="Wrap"/>
+            <TextBlock Text="自定义字体样式，请参照以下代码：" TextWrapping="Wrap"/>
+            <TextBox Style="{StaticResource NoBorderTextBoxStyle}" IsReadOnly="True" Text="   TextBlock formatTextBlock = new TextBlock();&#xa;   Run paragraph1 = new Run() { Text = &quot;Paragraph1&quot; };&#xa;   paragraph1.FontFamily = new FontFamily(&quot;Magnetob.ttf#Magneto&quot;);&#xa;   LineBreak lineBreak = new LineBreak();&#xa;   Run paragraph2 = new Run() { Text = &quot;Paragraph2&quot; };&#xa;   LinearGradientBrush brush = new LinearGradientBrush();&#xa;   brush.GradientStops.Add(new GradientStop() { Color = Colors.Blue, Offset = 0d });&#xa;   brush.GradientStops.Add(new GradientStop() { Color = Colors.Red, Offset = 1d });&#xa;   paragraph2.Foreground = brush;&#xa;   formatTextBlock.Inlines.Add(paragraph1);&#xa;   formatTextBlock.Inlines.Add(lineBreak);&#xa;   formatTextBlock.Inlines.Add(paragraph2);&#xa;   this.customizeFormatPlaceHolder.Children.Add(formatTextBlock);" TextWrapping="Wrap"/>
+            <TextBlock Text="结果：" TextWrapping="Wrap"/>
+            <StackPanel x:Name="customizeFormatPlaceHolder"/>
+
+            <!-- 以下部分展示如何通过代码选中文本框中的内容。请参照后台代码中的selectTextButton_Click方法 -->
+            <TextBlock Margin="0,10,0,0" Style="{StaticResource Parapraph2}" Text="选中文本框内容" TextWrapping="Wrap"/>
+            <TextBlock Text="以下代码展示如何通过代码选中文本框内容，文本框必须拥有焦点，选中效果才会显示" TextWrapping="Wrap"/>
+            <TextBox Style="{StaticResource NoBorderTextBoxStyle}" IsReadOnly="True" Text="   this.targetTextBox.SelectAll();&#xd;&#xa;   this.targetTextBox.Focus();" TextWrapping="Wrap"/>
+            <TextBox x:Name="targetTextBox" Text="示例文本" TextWrapping="Wrap"/>
+            <StackPanel Orientation="Vertical" Margin="0,3,0,0">
+                <Button x:Name="selectTextButton" HorizontalAlignment="Left" Content="Select All Text" Click="selectTextButton_Click"/>
+            </StackPanel>
+
+            <TextBlock Margin="0,10,0,0" Style="{StaticResource Parapraph2}" Text="Xaml还是代码？" TextWrapping="Wrap"/>
+            <TextBlock TextWrapping="Wrap" Text="通过比较偏向xaml与偏向代码的项目示例，不难发现，编写Xaml比代码更简洁。 这里我们只能展示一些并不复杂的文字样式。你还可以使用一些工具来帮你改变文本的样式，比如Expression Blend。推荐的方法是尽可能多的采用xaml来解决问题。 对于动态文本，在大多数情况下, 你可以定一些没有定义样式的文本块放在Xaml中做占位符,然后通过代码生成文本.如果你事先并不知道需要多少文本块,你可以在Xaml中声明一个文本块的Style,然后通过代码创建文本块,并使用预先定义的Style.总之,在使用Xaml时,不要与代码混淆."/>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

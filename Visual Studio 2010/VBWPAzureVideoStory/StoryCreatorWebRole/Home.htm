@@ -1,0 +1,31 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.6.2.min.js"></script>
+    <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js"></script>
+    <script type="text/javascript" src="Home.js"></script>
+    <script id="videoTemplate" type="text/x-jquery-tmpl">
+        <li>
+            <div>
+                <a onclick="playVideo('${VideoUri}')">${Name}</a>
+                <br/>
+                <a href="${VideoUri}">Download</a>
+            </div>
+        </li>
+    </script>
+
+    <link type="text/css" href="Home.css" rel="stylesheet"/>
+</head>
+<body>
+    <div id="leftColumn">
+        <div id="placeHolderDiv"><span>没有video被选中.</span></div>
+        <video id="videoPlayer"></video>
+    </div>
+    <div id="rightColumn">
+        <span>从video中选中一个story.</span>
+        <ul id="videoList">
+        </ul>
+    </div>
+</body>
+</html>

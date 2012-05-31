@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<siteMap xmlns="http://schemas.microsoft.com/AspNet/SiteMap-File-1.0" >
+    <siteMapNode url="~/Default.aspx" title="根页面"  description="根页面" resourceKey="root">
+      <siteMapNode url="~/Category.aspx" title="分类" description="分类" resourceKey="category">
+        <siteMapNode url="~/Item.aspx" title="项目" description="项目" resourceKey="item" />
+      </siteMapNode>
+    </siteMapNode>
+</siteMap>

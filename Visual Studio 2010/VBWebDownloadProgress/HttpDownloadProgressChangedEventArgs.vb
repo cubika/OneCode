@@ -1,0 +1,60 @@
+﻿'*************************** 模块头 ******************************'
+' 模块名:  HttpDownloadProgressChangedEventArgs.vb
+' 项目名:  VBWebDownloadProgress
+' 版权(c)  Microsoft Corporation.
+' 
+' HttpDownloadProgressChangedEventArgs类定义了HttpDownloadClient的
+' DownloadProgressChanged事件中使用的参数。
+' 
+' This source is subject to the Microsoft Public License.
+' See http://www.microsoft.com/opensource/licenses.mspx#Ms-PL.
+' All other rights reserved.
+' 
+' THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND, 
+' EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED 
+' WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
+'*************************************************************************'
+
+Public Class HttpDownloadProgressChangedEventArgs
+    Inherits EventArgs
+
+    Private _receivedSize As Int64
+
+    Public Property ReceivedSize() As Int64
+        Get
+            Return _receivedSize
+        End Get
+        Private Set(ByVal value As Int64)
+            _receivedSize = value
+        End Set
+    End Property
+
+    Private _totalSize As Int64
+
+    Public Property TotalSize() As Int64
+        Get
+            Return _totalSize
+        End Get
+        Private Set(ByVal value As Int64)
+            _totalSize = value
+        End Set
+    End Property
+
+    Private _downloadSpeed As Integer
+
+    Public Property DownloadSpeed() As Integer
+        Get
+            Return _downloadSpeed
+        End Get
+        Private Set(ByVal value As Integer)
+            _downloadSpeed = value
+        End Set
+    End Property
+
+    Public Sub New(ByVal receivedSize As Int64, ByVal totalSize As Int64,
+                   ByVal downloadSpeed As Integer)
+        Me.ReceivedSize = receivedSize
+        Me.TotalSize = totalSize
+        Me.DownloadSpeed = downloadSpeed
+    End Sub
+End Class
